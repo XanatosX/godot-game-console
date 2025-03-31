@@ -1,4 +1,4 @@
-extends Button
+class_name ConsoleSendButton extends Button
 
 signal request_command(text: String)
 

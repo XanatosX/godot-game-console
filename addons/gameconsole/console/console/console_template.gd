@@ -8,7 +8,7 @@ signal is_command_valid(confirmed: bool)
 signal clear_output()
 signal clear_input()
 
-signal autocomplete_found(autocompletion: String)
+signal autocomplete_found(autocompletion: StrippedCommand)
 
 @export_group("GameConsole Setup")
 @export var console_content_output: ConsoleOutput
@@ -16,7 +16,6 @@ signal autocomplete_found(autocompletion: String)
 @export var console_send_button: Button
 @export var autocomplete_service: AutocompleteService
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	if console_content_output == null:
 		printerr("GameConsole template is missing output window")
@@ -41,6 +40,7 @@ func execute_command(command: Command):
 	command_requested.emit(command)
 
 func request_command(text: String):
+	print("requested" + text)
 	command_requested.emit(text)
 	clear_input.emit()
 

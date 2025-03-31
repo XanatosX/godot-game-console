@@ -1,10 +1,10 @@
 extends CommandTemplate
 
 func create_command() -> Command:
-    var command = Command.new("close", close, [], "close the console")
+    var command = Command.new("_close", _close, [], "_close the console")
     return command
 
-func close() -> String:
+func _close() -> String:
     Console.hide_console()
     return ""
 
