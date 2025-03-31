@@ -155,6 +155,8 @@ func _register_commands_in_directory(directory: String):
 	var loaded_scripts: Array[Resource]
 	var files = dir.get_files()
 	for file in files:
+		if !file.ends_with(".gd"):
+			continue
 		var path = directory + file
 		var script = load(path)
 		if script != null:
