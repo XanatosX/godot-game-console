@@ -40,7 +40,6 @@ func execute_command(command: Command):
 	command_requested.emit(command)
 
 func request_command(text: String):
-	print("requested" + text)
 	command_requested.emit(text)
 	clear_input.emit()
 
