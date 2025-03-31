@@ -1,14 +1,17 @@
 class_name ConsoleOutput extends RichTextLabel
 
-var stored_text: String = ""
+var _stored_text: String = ""
+
+func _ready():
+	bbcode_enabled = true
 
 func append_bbcode_text(text: String):
 	append_text(text)
-	stored_text += text
+	_stored_text += text
 
 func get_stored_text() -> String:
-	return stored_text
+	return _stored_text
 
 func clear_stored_text():
-	stored_text = ""
+	_stored_text = ""
 	clear()
