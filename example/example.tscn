@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://d8w8msl1jn6y"]
+
+[ext_resource type="Script" path="res://example/console_example.gd" id="1_fquvx"]
+[ext_resource type="PackedScene" uid="uid://dc0s3ddmhpk6i" path="res://example/custom_console_template.tscn" id="2_iilx0"]
+
+[node name="Example" type="Node2D"]
+script = ExtResource("1_fquvx")
+custom_console_template = ExtResource("2_iilx0")
