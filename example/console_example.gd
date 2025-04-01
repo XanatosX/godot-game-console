@@ -112,5 +112,6 @@ func _unregister_commands():
 	Console.remove_command("count_up")
 	Console.remove_command("count_down")
 	Console.remove_command("custom_console")
+	Console.remove_command("reload")
 	Console.remove_command("default_console")
 	Console.remove_command("spawn_entity")

@@ -6,11 +6,54 @@ To learn how to add and remove custom commands please checkout the example [scri
 
 I do know there is a addon like this already in development, check it out at the end of this readme. I still wanted to create my own interpretation of this used in games I created. But as I already developed it I decided to make it public and give something back to the Godot developer community.
 
+![Welcome Image](https://i.imgur.com/Z7XDN6T.jpeg)
+![List commands](https://i.imgur.com/XN2kKRB.jpeg)
+
 ## How to install
 
 To install the addon download the source files and put the "addons" folder on a root level to your project. After that enable the plugin via the Godot plugin menu.
 
 Checkout this part of the [Godot documentation][installing-and-enable-plugin]
+
+## Quickstart
+
+### Register a command
+
+```gdscript
+Console.register_custom_command("reload", _reload, [], "Reload current scene")
+
+func _reload() -> String:
+	get_tree().reload_current_scene()
+	return "reloaded scene"
+```
+
+### Unregister a command
+
+```gdscript
+Console.remove_command("reload")
+```
+
+### Other important Options
+
+```gdscript
+## Set toggle key
+Console.set_console_key(KEY_F12) 
+
+## Hide console
+Console.hide_console()
+
+## Show console
+Console.show_console()
+
+## Pause game tree if console does open up
+Console.should_pause_on_open()
+
+## Disable console completely, can be used to remove it on release builds
+Console.disable() 
+
+## Enable a disabled console
+Console.enable() 
+```
 
 ## Example Project
 
