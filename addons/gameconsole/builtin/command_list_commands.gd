@@ -8,10 +8,10 @@ func _list_commands() -> String:
     var commands = Console.get_all_commands() as Array[Command]
     var built_in = commands.filter(func(command): return command.built_in) as Array[Command]
     var custom = commands.filter(func(command): return !command.built_in) as Array[Command]
-    var return_data = "[color=yellow]=== All commands ===[/color]\n"
-    return_data += "== Built In ==\n"
+    var return_data = "[color=yellow][b]All commands[/b][/color]\n"
+    return_data += "[u]Built In[/u]\n"
     return_data += _generate_command_list(built_in)
-    return_data += "\n== Custom ==\n"
+    return_data += "\n[u]Custom[/u]\n"
     return_data += _generate_command_list(custom)
     return  return_data
 

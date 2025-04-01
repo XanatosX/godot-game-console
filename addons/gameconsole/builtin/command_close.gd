@@ -1,7 +1,7 @@
 extends CommandTemplate
 
 func create_command() -> Command:
-    var command = Command.new("close", _close, [], "_close the console")
+    var command = Command.new("close", _close, [], "close the console")
     return command
 
 func _close() -> String:
