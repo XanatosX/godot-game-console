@@ -5,6 +5,8 @@ signal output_append(text: String)
 signal store_content(text: String)
 signal confirm_command(text: String)
 signal is_command_valid(confirmed: bool)
+signal url_meta_requested(data: Dictionary)
+signal set_input(command: String)
 signal clear_output()
 signal clear_input()
 
@@ -65,3 +67,15 @@ func check_if_is_valid_command(text: String):
 
 func command_valid(confirmed: bool):
 	is_command_valid.emit(confirmed)
+
+func force_set_input(command: String):
+	set_input.emit(command)
+	
+func url_requested(data):
+	var json_parser = JSON.new()
+	var parsed_json = json_parser.parse(data)
+	if parsed_json != OK:
+		Console.print_as_error("url data was not correctly parsed")
+		return
+	var dictionary = json_parser.get_data()
+	url_meta_requested.emit(dictionary)

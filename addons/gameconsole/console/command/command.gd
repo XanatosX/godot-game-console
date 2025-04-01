@@ -34,7 +34,8 @@ func execute(arguments: Array) -> String:
 	return data
 
 func get_self_listed():
-	var return_data = "- %s %s" % [get_command_name(), get_arguments()]
+	var url_part = "[url={\"type\": \"man\", \"command\": \"%s\"}]" % command
+	var return_data = "- %s%s %s[/url]" % [url_part, get_command_name(), get_arguments()]
 	if short_description != "":
 		return_data += " => %s" % short_description
 	
@@ -54,18 +55,20 @@ func as_stripped() -> StrippedCommand:
 	return return_data
 
 func get_man_page() -> String:
-	var return_text = "== %s ==\n" % command
+	var command_url = "[url={\"type\": \"enter\", \"command\": \"%s\"}]" % command
+	var return_text = "%s[b]%s[/b][/url]\n\n" % [command_url, command]
 	var description_to_show = description
 	if description_to_show == "":
 		description_to_show = short_description
 	return_text += "%s\n" % description_to_show
 	if arguments.size() > 0:
-		return_text += "= Arguments =\n"
+		return_text += "\n[i][b]Arguments[/b][/i]\n"
 		for argument in arguments:
 			return_text += "- %s\n" % argument
 	if examples.size() > 0:
-		return_text += "= Examples =\n"
+		return_text += "\n[i][b]Examples[/b][/i]\n"
 		for example in examples:
-			return_text += "- %s\n" % example
+			var example_url = "[url={\"type\": \"enter\", \"command\": \"%s\"}]" % example
+			return_text += "- %s%s[/url]\n" % [example_url, example]
 
 	return return_text

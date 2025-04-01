@@ -5,8 +5,11 @@ signal console_open()
 
 signal console_output(text: String)
 signal is_current_command_valid(confirmed: bool)
+signal copy_command_to_input(command: String)
 
 @onready var console_template: PackedScene = preload("res://addons/gameconsole/console/console/default_console_template.tscn")
+var config_file = "res://addons/gameconsole/plugin.cfg"
+var _plugin_config: ConfigFile = null
 
 var _console_commands := {}
 var _used_template: PackedScene
@@ -20,12 +23,19 @@ var _last_state: bool = false
 
 var _stored_console_content: String = ""
 var _console_key: int = KEY_QUOTELEFT
+var _first_time_open: bool = true
 
 func _ready():
 	_preregister_commands()
 	add_child(_overlay_node)
 	_used_template = console_template
 	process_mode = PROCESS_MODE_ALWAYS
+	_plugin_config = ConfigFile.new()
+	if _plugin_config.load(config_file) != OK:
+		printerr("addon config not loaded correctly")
+
+func get_plugin_config() -> ConfigFile:
+	return _plugin_config
 
 func should_pause_on_open(pause: bool):
 	_should_pause = pause
@@ -60,6 +70,8 @@ func show_console():
 	template.store_content.connect(_store_console_content)
 	template.clear_output.connect(_clear_stored_console_content)
 	template.confirm_command.connect(_check_command)
+	template.url_meta_requested.connect(url_requested)
+	copy_command_to_input.connect(template.force_set_input)
 	is_current_command_valid.connect(template.command_valid)
 	console_output.connect(template.add_console_output)
 	_overlay_node.add_child(template)
@@ -68,6 +80,9 @@ func show_console():
 	if _should_pause:
 		search_and_execute_command("pause")
 	_console_shown = true
+	if _first_time_open:
+		search_and_execute_command("help")
+		_first_time_open = false
 	console_open.emit()
 
 func hide_console():
@@ -87,6 +102,7 @@ func _store_console_content(text: String):
 
 func _clear_stored_console_content():
 	_stored_console_content = ""
+	search_and_execute_command("help")
 
 func _check_command(text: String):
 	var executer = CommandDefinition.new(text)
@@ -215,3 +231,12 @@ func get_specific_command(command_name: String) -> Command:
 	if !_console_commands.has(command_name):
 		return null	
 	return _console_commands[command_name]
+
+func url_requested(data: Dictionary):
+	match  data.type:
+		"man":
+			search_and_execute_command("man %s" % data.command)
+		"enter":
+			copy_command_to_input.emit(data.command)		
+		"execute":
+			search_and_execute_command(data.command)
