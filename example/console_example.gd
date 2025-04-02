@@ -14,6 +14,7 @@ var counter: int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_register_commands()
+	Console.unknown_interaction_request.connect(_handle_unknown_interaction)
 	if always_use_custom_console:
 		Console.set_custom_command_template(custom_console_template)
 
@@ -71,11 +72,31 @@ func _spawn_entity(pos_x: String, pos_y: String, ttl: String) -> String:
 	var real_y = int(pos_y)
 	var real_ttl = float(ttl)
 
-	var target_position = Vector2(real_x, real_y)
-	var new_node = EntityExample.new(target_position, real_ttl)
-	add_child(new_node)
+	_trigger_spawn_entity(real_x, real_y, real_ttl)
 
-	return "Spawn entity at (%s/%s) with a ttl or %s" % [real_x, real_y, real_ttl]
+	var custom_interaction = Interaction.new()
+	var custom_edit = Interaction.new()
+
+	# The second parameter would be some identifier to find entity to spawn
+	custom_interaction.from_raw("spawn_entity", "entity_example", {
+		"x": real_x,
+		"y": real_y,
+		"ttl": real_ttl
+	})
+
+	custom_edit.from_raw("enter", "spawn_entity %s %s %s" % [pos_x, pos_y, ttl])
+
+	return "Spawn entity at (%s/%s) with a ttl of %s [url=%s]retrigger[/url] or [url=%s]edit[/url]" % [real_x,
+																									   real_y,
+																									   real_ttl,
+																									   custom_interaction.get_as_string(),
+																									   custom_edit.get_as_string()
+																									  ]
+
+func _trigger_spawn_entity(x: int, y: int, ttl: float):
+	var target_position = Vector2(x, y)
+	var new_node = EntityExample.new(target_position, ttl)
+	add_child(new_node)
 
 func _reload() -> String:
 	get_tree().reload_current_scene()
@@ -106,6 +127,18 @@ func _open_default_console():
 	Console.set_custom_command_template(null)
 	Console.hide_console()
 	Console.show_console()
+
+func _handle_unknown_interaction(interaction: Interaction):
+	match interaction.get_type():
+		"spawn_entity":
+			## In theory this would be the entity we want to spawn, this is added just for demo purpose
+			var _entity_name = interaction.get_data()
+			var x = interaction.get_additional_data().get_or_add("x", 0)
+			var y = interaction.get_additional_data().get_or_add("y", 0)
+			var ttl = interaction.get_additional_data().get_or_add("ttl", 0)
+
+			_trigger_spawn_entity(x, y, ttl)
+
 
 func _unregister_commands():
 	# Should be done if scene gets unloaded to prevent broken commands

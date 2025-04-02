@@ -7,6 +7,8 @@ signal console_output(text: String)
 signal is_current_command_valid(confirmed: bool)
 signal copy_command_to_input(command: String)
 
+signal unknown_interaction_request(interaction: Interaction)
+
 @onready var console_template: PackedScene = preload("res://addons/gameconsole/console/console/default_console_template.tscn")
 var config_file = "res://addons/gameconsole/plugin.cfg"
 var _plugin_config: ConfigFile = null
@@ -232,11 +234,15 @@ func get_specific_command(command_name: String) -> Command:
 		return null	
 	return _console_commands[command_name]
 
-func url_requested(data: Dictionary):
-	match  data.type:
+func url_requested(interaction: Interaction):
+	match  interaction.get_type():
+		"UNKNOWN":
+			search_and_execute_command("man list_commands")
 		"man":
-			search_and_execute_command("man %s" % data.command)
+			search_and_execute_command("man %s" % interaction.get_data())
 		"enter":
-			copy_command_to_input.emit(data.command)		
+			copy_command_to_input.emit(interaction.get_data())		
 		"execute":
-			search_and_execute_command(data.command)
+			search_and_execute_command(interaction.get_data())
+		_:
+			unknown_interaction_request.emit(interaction)
