@@ -236,8 +236,6 @@ func get_specific_command(command_name: String) -> Command:
 
 func url_requested(interaction: Interaction):
 	match  interaction.get_type():
-		"UNKNOWN":
-			search_and_execute_command("man list_commands")
 		"man":
 			search_and_execute_command("man %s" % interaction.get_data())
 		"enter":
