@@ -14,10 +14,10 @@ script = ExtResource("2_5ui7n")
 process_mode = 3
 layer = 20
 script = ExtResource("1_wfkix")
+autocomplete_service = SubResource("Resource_vkyqv")
 console_content_output = NodePath("PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput")
 console_input = NodePath("PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput")
 console_send_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleSendButton")
-autocomplete_service = SubResource("Resource_vkyqv")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 10
