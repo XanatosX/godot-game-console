@@ -15,10 +15,10 @@ bg_color = Color(0.136826, 0.136826, 0.136826, 1)
 
 [node name="CustomConsoleTemplate" type="CanvasLayer" node_paths=PackedStringArray("console_content_output", "console_input", "console_send_button")]
 script = ExtResource("1_rkm11")
+autocomplete_service = SubResource("Resource_lhmvy")
 console_content_output = NodePath("PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput")
 console_input = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput")
 console_send_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ConsoleSendButton")
-autocomplete_service = SubResource("Resource_lhmvy")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 9

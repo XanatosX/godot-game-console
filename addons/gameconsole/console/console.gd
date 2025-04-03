@@ -10,8 +10,6 @@ signal copy_command_to_input(command: String)
 signal unknown_interaction_request(interaction: Interaction)
 
 @onready var console_template: PackedScene = preload("res://addons/gameconsole/console/console/default_console_template.tscn")
-var config_file = "res://addons/gameconsole/plugin.cfg"
-var _plugin_config: ConfigFile = null
 
 var _console_commands := {}
 var _used_template: PackedScene
@@ -26,18 +24,20 @@ var _last_state: bool = false
 var _stored_console_content: String = ""
 var _console_key: int = KEY_QUOTELEFT
 var _first_time_open: bool = true
+var _console_information := {
+	"name": "Game Console",
+	"authors": "Xanatos",
+	"version": "0.3.1"
+}
 
 func _ready():
 	_preregister_commands()
 	add_child(_overlay_node)
 	_used_template = console_template
 	process_mode = PROCESS_MODE_ALWAYS
-	_plugin_config = ConfigFile.new()
-	if _plugin_config.load(config_file) != OK:
-		printerr("addon config not loaded correctly")
 
-func get_plugin_config() -> ConfigFile:
-	return _plugin_config
+func get_console_information() -> Dictionary:
+	return _console_information
 
 func should_pause_on_open(pause: bool):
 	_should_pause = pause
@@ -173,7 +173,7 @@ func _register_commands_in_directory(directory: String):
 	var loaded_scripts: Array[Resource]
 	var files = dir.get_files()
 	for file in files:
-		if !file.ends_with(".gd"):
+		if !file.ends_with(".gd") and !file.ends_with(".gdc"):
 			continue
 		var path = directory + file
 		var script = load(path)
@@ -236,8 +236,6 @@ func get_specific_command(command_name: String) -> Command:
 
 func url_requested(interaction: Interaction):
 	match  interaction.get_type():
-		"UNKNOWN":
-			search_and_execute_command("man list_commands")
 		"man":
 			search_and_execute_command("man %s" % interaction.get_data())
 		"enter":
