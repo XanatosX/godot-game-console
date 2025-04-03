@@ -47,14 +47,12 @@ func execute(arguments: Array) -> String:
 		data = ""
 	return data
 
-func get_self_listed():
+func get_interactive_command():
 	var url_part = "[url=%s]" % self_man_link.get_as_string()
-	var return_data = "- %s%s %s[/url]" % [url_part, get_command_name(), get_arguments()]
-	if short_description != "":
-		return_data += " => %s" % short_description
-	
-	return_data += "\n"
-	return return_data
+	return "%s%s %s[/url]" % [url_part, get_command_name(), get_arguments()]
+
+func get_command_short_description():
+	return short_description
 
 func get_arguments() -> String:
 	var return_arguments = ""
@@ -76,14 +74,19 @@ func get_man_page() -> String:
 		description_to_show = short_description
 	return_text += "%s\n" % description_to_show
 	if arguments.size() > 0:
-		return_text += "\n[i][b]Arguments[/b][/i]\n"
+		return_text += "\n[i][b]Arguments[/b][/i]\n\n"
+		return_text += "[ul]"
 		for argument in arguments:
-			return_text += "- %s\n" % argument
+			return_text += "%s\n" % argument
+		return_text += "[/ul]"
 	if examples.size() > 0:
-		return_text += "\n[i][b]Examples[/b][/i]\n"
+		return_text += "\n\n[i][b]Examples[/b][/i]\n\n"
+		return_text += "[ul]"
 		for example in examples:
 			var link = self_example_links[example] as Interaction
+			
 			var example_url = "[url=%s]" % link.get_as_string()
-			return_text += "- %s%s[/url]\n" % [example_url, example]
+			return_text += "%s%s[/url]\n" % [example_url, example]
+		return_text += "[/ul]"
 
 	return return_text
