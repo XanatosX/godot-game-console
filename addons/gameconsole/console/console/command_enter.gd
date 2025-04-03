@@ -58,6 +58,7 @@ func _update_selection_text():
 	text = _current_history[selection]
 	
 	text_changed.emit(text)
+	caret_column = text.length()
 	get_tree().get_root().set_input_as_handled()
 
 func autocomplete_accepted(autocomplete_text: String):
