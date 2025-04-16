@@ -55,11 +55,12 @@ func _update_selection_text():
 		return
 	_index = clampi(_index, 0, _current_history.size() -1)
 	var selection = _current_history.size() - 1 - _index
-	text = _current_history[selection]
+	if !_current_history.is_empty():
+		text = _current_history[selection]
 	
-	text_changed.emit(text)
-	caret_column = text.length()
-	get_tree().get_root().set_input_as_handled()
+		text_changed.emit(text)
+		caret_column = text.length()
+		get_tree().get_root().set_input_as_handled()
 
 func autocomplete_accepted(autocomplete_text: String):
 	text = autocomplete_text
