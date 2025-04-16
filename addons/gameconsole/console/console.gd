@@ -27,7 +27,7 @@ var _first_time_open: bool = true
 var _console_information := {
 	"name": "Game Console",
 	"authors": "Xanatos",
-	"version": "0.3.1"
+	"version": "0.3.2"
 }
 
 func _ready():
