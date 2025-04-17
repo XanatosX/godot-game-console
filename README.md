@@ -41,17 +41,22 @@ Console.remove_command("reload")
 ### Other important Options
 
 ```gdscript
-## Set toggle key
-Console.set_console_key(KEY_F12) 
+
+## Change the console settings
+## There are more options 
+Console.update_console_settings(func(settings: ConsoleSettings):
+	## Set key to toggle console
+	settings.open_console_key = KEY_F12
+
+	## Pause game tree if console does open up
+	settings.pause_game_if_console_opened = true
+)
 
 ## Hide console
 Console.hide_console()
 
 ## Show console
 Console.show_console()
-
-## Pause game tree if console does open up
-Console.should_pause_on_open()
 
 ## Disable console completely, can be used to remove it on release builds
 Console.disable() 

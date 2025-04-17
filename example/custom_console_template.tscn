@@ -1,14 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://dc0s3ddmhpk6i"]
+[gd_scene load_steps=7 format=3 uid="uid://dc0s3ddmhpk6i"]
 
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/console_template.gd" id="1_rkm11"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/console_output.gd" id="2_0lla3"]
-[ext_resource type="Script" path="res://addons/gameconsole/console/autocompletion/autocomplete_service.gd" id="2_yvku1"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/autocomplete_label.gd" id="3_331dq"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/command_send_button.gd" id="4_7fr1q"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/command_enter.gd" id="4_70us0"]
-
-[sub_resource type="Resource" id="Resource_lhmvy"]
-script = ExtResource("2_yvku1")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_65uy4"]
 bg_color = Color(0.136826, 0.136826, 0.136826, 1)
@@ -18,7 +14,6 @@ script = ExtResource("1_rkm11")
 console_content_output = NodePath("PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput")
 console_input = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput")
 console_send_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ConsoleSendButton")
-autocomplete_service = SubResource("Resource_lhmvy")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 9
