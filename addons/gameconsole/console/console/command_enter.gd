@@ -2,11 +2,6 @@ class_name ConsoleInput extends LineEdit
 
 signal reset_autocomplete()
 
-@export var non_existing_function_color: Color = Color(0.85, 0, 0)
-@export var existing_function_color: Color = Color(0, 0.65, 0)
-@export var autocomplete_available: Color = Color(1, 0.65, 0)
-@export var enable_autocomplete_color: bool = true
-
 var _current_history: Array[String] = []
 
 var _index = -1
@@ -16,7 +11,7 @@ var _autocomplete_color_active: bool = false
 
 func _ready():
 	text_submitted.connect(_submitted)
-	_autocomplete_color_active = enable_autocomplete_color
+	_autocomplete_color_active = Console.console_settings.enable_autocomplete_color
 	if !FileAccess.file_exists(_save_file):
 		return
 	var data = FileAccess.get_file_as_string(_save_file)
@@ -71,10 +66,10 @@ func _update_selection_text():
 		get_tree().get_root().set_input_as_handled()
 
 func autocompletion_found(data: Array[StrippedCommand]):
-	if !enable_autocomplete_color or !_autocomplete_color_active:
+	if !Console.console_settings.enable_autocomplete_color or !_autocomplete_color_active:
 		return
 	if !data.is_empty():
-		_change_color(autocomplete_available)
+		_change_color(Console.console_settings.autocomplete_available_color)
 		_autocomplete_found = true
 		return
 
@@ -93,9 +88,9 @@ func is_command_valid(confirmed: bool):
 		_autocomplete_found = false
 		return
 	if confirmed:
-		_change_color(existing_function_color)
+		_change_color(Console.console_settings.existing_function_color)
 	else:
-		_change_color(non_existing_function_color)
+		_change_color(Console.console_settings.non_existing_function_color)
 
 func _change_color(color: Color):
 	add_theme_color_override("font_color", color)

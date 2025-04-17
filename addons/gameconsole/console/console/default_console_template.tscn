@@ -1,13 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c71do5a646sh0"]
+[gd_scene load_steps=5 format=3 uid="uid://c71do5a646sh0"]
 
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/console_template.gd" id="1_wfkix"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/command_enter.gd" id="2_1bnin"]
-[ext_resource type="Script" path="res://addons/gameconsole/console/autocompletion/autocomplete_service.gd" id="2_5ui7n"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/console_output.gd" id="3_m4yog"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/autocomplete_label.gd" id="4_jxlgx"]
-
-[sub_resource type="Resource" id="Resource_vkyqv"]
-script = ExtResource("2_5ui7n")
 
 [node name="CommandLineTemplate" type="CanvasLayer" node_paths=PackedStringArray("console_content_output", "console_input")]
 process_mode = 3
@@ -15,7 +11,6 @@ layer = 20
 script = ExtResource("1_wfkix")
 console_content_output = NodePath("PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput")
 console_input = NodePath("PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput")
-autocomplete_service = SubResource("Resource_vkyqv")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 10

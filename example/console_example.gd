@@ -16,7 +16,9 @@ func _ready() -> void:
 	_register_commands()
 	Console.unknown_interaction_request.connect(_handle_unknown_interaction)
 	if always_use_custom_console:
-		Console.set_custom_command_template(custom_console_template)
+		Console.update_console_settings(func(settings: ConsoleSettings): 
+			settings.custom_template = custom_console_template
+		)
 
 func _exit_tree() -> void:
 	_unregister_commands()
@@ -53,7 +55,7 @@ func _register_commands():
 								   )
 
 	if overwrite_console_toggle_key_with_f12:
-		Console.set_console_key(KEY_F12)
+		Console.update_console_settings(func(settings: ConsoleSettings): settings.open_console_key = KEY_F12)
 
 	if !always_use_custom_console:
 		Console.register_custom_command("custom_console", _open_custom_console, [], "Open your custom console", "", [])
@@ -119,12 +121,20 @@ func _count_down(amount: String) -> String:
 	return "Decreased counter from %s to %s" % [old_counter, counter]
 
 func _open_custom_console():
-	Console.set_custom_command_template(custom_console_template)
+	Console.update_console_settings(func(settings: ConsoleSettings):
+		settings.custom_template = custom_console_template
+	)
 	Console.hide_console()
 	Console.show_console()
 
 func _open_default_console():
-	Console.set_custom_command_template(null)
+	Console.update_console_settings(func(settings: ConsoleSettings):
+		settings.open_console_key = KEY_F12
+		settings.pause_game_if_console_opened = true
+	)
+	Console.update_console_settings(func(settings: ConsoleSettings):
+		settings.custom_template = null
+	)
 	Console.hide_console()
 	Console.show_console()
 

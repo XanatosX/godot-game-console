@@ -16,7 +16,6 @@ signal autocomplete_found(autocompletion: Array[StrippedCommand])
 @export var console_content_output: ConsoleOutput
 @export var console_input: LineEdit
 @export var console_send_button: Button
-@export var autocomplete_service: AutocompleteService
 
 func _ready():
 	if console_content_output == null:
@@ -48,10 +47,10 @@ func clear_command():
 	clear_output.emit()
 
 func autocomplete_requested(typed: String):
-	if autocomplete_service == null:
+	if Console.console_settings.autocomplete_service == null:
 		return
 
-	var matches = autocomplete_service.search_autocomplete(typed)
+	var matches = Console.console_settings.autocomplete_service.search_autocomplete(typed)
 	if matches.size() > 0:
 		autocomplete_found.emit(matches)
 
