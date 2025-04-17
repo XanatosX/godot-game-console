@@ -1,23 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://c71do5a646sh0"]
+[gd_scene load_steps=7 format=3 uid="uid://c71do5a646sh0"]
 
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/console_template.gd" id="1_wfkix"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/command_enter.gd" id="2_1bnin"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/autocompletion/autocomplete_service.gd" id="2_5ui7n"]
-[ext_resource type="Script" path="res://addons/gameconsole/console/console/command_send_button.gd" id="2_p027c"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/console_output.gd" id="3_m4yog"]
 [ext_resource type="Script" path="res://addons/gameconsole/console/console/autocomplete_label.gd" id="4_jxlgx"]
 
 [sub_resource type="Resource" id="Resource_vkyqv"]
 script = ExtResource("2_5ui7n")
 
-[node name="CommandLineTemplate" type="CanvasLayer" node_paths=PackedStringArray("console_content_output", "console_input", "console_send_button")]
+[node name="CommandLineTemplate" type="CanvasLayer" node_paths=PackedStringArray("console_content_output", "console_input")]
 process_mode = 3
 layer = 20
 script = ExtResource("1_wfkix")
-autocomplete_service = SubResource("Resource_vkyqv")
 console_content_output = NodePath("PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput")
 console_input = NodePath("PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput")
-console_send_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleSendButton")
+autocomplete_service = SubResource("Resource_vkyqv")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 10
@@ -63,20 +61,13 @@ theme_override_font_sizes/font_size = 14
 placeholder_text = "Enter Command use up and down to navigate history"
 script = ExtResource("2_1bnin")
 
-[node name="ConsoleSendButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("command_input")]
-layout_mode = 2
-size_flags_vertical = 0
-theme_override_font_sizes/font_size = 14
-text = "Send"
-script = ExtResource("2_p027c")
-command_input = NodePath("../ConsoleInput")
-
 [node name="ConsoleAutocomplete" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 script = ExtResource("4_jxlgx")
 
+[connection signal="autocomplete_found" from="." to="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" method="autocompletion_found"]
 [connection signal="autocomplete_found" from="." to="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ConsoleAutocomplete" method="autocompletion_found"]
 [connection signal="clear_input" from="." to="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" method="clear"]
 [connection signal="clear_output" from="." to="PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput" method="clear_stored_text"]
@@ -84,6 +75,7 @@ script = ExtResource("4_jxlgx")
 [connection signal="output_append" from="." to="PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput" method="append_bbcode_text"]
 [connection signal="set_input" from="." to="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" method="autocomplete_accepted"]
 [connection signal="meta_clicked" from="PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput" to="." method="url_requested"]
+[connection signal="reset_autocomplete" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" to="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ConsoleAutocomplete" method="force_reset"]
 [connection signal="text_changed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" to="." method="autocomplete_requested"]
 [connection signal="text_changed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" to="." method="check_if_is_valid_command"]
 [connection signal="text_changed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" to="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ConsoleAutocomplete" method="text_updated"]
