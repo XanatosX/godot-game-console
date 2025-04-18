@@ -1,10 +1,12 @@
 # Godot Game Console
 
-This Godot addon will add a game console to your game. This console can be used to run commands on your game.
+This Godot addon will add a game console to your game. This console can be used to run commands from within your game.
 
-To learn how to add and remove custom commands please checkout the example [script][example-gdscript].
+To learn how to add and remove custom commands please checkout the example [script][example-gdscript] or check the quickstart secion down below.
 
-I do know there is a addon like this already in development, check it out at the end of this readme. I still wanted to create my own interpretation of this used in games I created. But as I already developed it I decided to make it public and give something back to the Godot developer community.
+I do know there is a addon like this already in development, check it out at the end of this readme.
+I still wanted to create my own interpretation of this used in games I created.
+But as I already developed it I decided to make it public and give something back to the Godot developer community.
 
 ![Welcome Image](https://i.imgur.com/Z7XDN6T.jpeg)
 ![List commands](https://i.imgur.com/XN2kKRB.jpeg)
@@ -15,7 +17,8 @@ To install the addon download the source files and put the "addons" folder on a 
 
 Checkout this part of the [Godot documentation][installing-and-enable-plugin].
 
-> :warning: If you install the plugin and it is not active it is possible that godot will throw errors that the identifier "Console" cannot be found. To fix this issues you just need to activate the plugin, this error is a result of an dependency to that global instance, which is not present after install throwing an error on Godot automatic code check.
+> :warning: If you install the plugin and it is not active it is possible that godot will throw errors that the identifier "Console" cannot be found.
+>To fix this issues you just need to activate the plugin, this error is a result of an dependency to that global instance, which is not present after install throwing an error on Godot automatic code check.
 
 ![Installation error](https://i.imgur.com/5HuV62g.png)
 *Error listed because Console is not loaded just yet, this is normal*
@@ -67,25 +70,26 @@ Console.enable()
 
 ## Example Project
 
-I added a test and example project to this addon so you can check out the console in action. The example is not much but does show the usage in a really basic manner.
+For further instructions on how to use this addon, checkout the example project. There are some custom commands in the example and some settings changed,
+this should help you to get started. 
 
 ## Built in commands
 
 This is a list with build in commands and there purpose
 
 | Name          | Description                                                                                                           | example       |
-| ------------- | --------------------------------------------------------------------------------------------------------------------- | ------------- |
+|---------------|-----------------------------------------------------------------------------------------------------------------------|---------------|
 | list_commands | This will list all the built in and custom commands currently available                                               | list_commands |
 | clear         | Clear the output of the console window                                                                                | clear         |
 | man           | Get a more detailed description of a command, also including examples if any. Requires the command name as a argument | man clear     |
 | pause         | Pause the game by pausing the root tree                                                                               | pause         |
 | unpause       | unpause the game by unpausing the root                                                                                | unpause       |
 | quit          | Close the game, does not work on a web build.                                                                         | quit          |
+| help          | Get help about the console, this will list the name, version and a short help text                                    | help          |
 
+## Special Thanks to
 
-## Thanks to
-
-As this addon is influenced by the godot console addon check it out as well.
+jitspoe because his addon did influenced the creation for my interpretation of it. So check it our as well, it might more more suitable for you.
 
 - https://github.com/jitspoe/godot-console
 
