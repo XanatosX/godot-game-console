@@ -55,12 +55,30 @@ func _display_autocomplete(data: StrippedCommand):
 	_found_complete = false
 
 func _input(event):
+	if _allowed_commands.is_empty():
+		return
 	if event is InputEventKey and visible:
-		if (event.get_physical_keycode_with_modifiers() == KEY_TAB):
-			if (event.pressed):
+		if event.get_physical_keycode_with_modifiers() == Console.console_settings.console_autocomplete_key:
+			if event.pressed:
 				_previously_accepted_autocomplete = true
 				autocomplete_accepted.emit(_allowed_commands[_completion_index].command)
 				_completion_index += 1
 				if _completion_index >= _allowed_commands.size():
 					_completion_index = 0
 				_display_autocomplete(_allowed_commands[_completion_index])
+
+		if event.get_physical_keycode_with_modifiers() == Console.console_settings.console_autocomplete_key + KEY_MASK_SHIFT:
+			if event.pressed:
+				_previously_accepted_autocomplete = true
+				_completion_index -= 2
+				if _completion_index < 0:
+					_completion_index = _allowed_commands.size() + _completion_index
+				
+				
+				autocomplete_accepted.emit(_allowed_commands[_completion_index].command)
+				_completion_index += 1				
+				if _completion_index >= _allowed_commands.size():
+					_completion_index = 0
+				_display_autocomplete(_allowed_commands[_completion_index])
+		
+			
