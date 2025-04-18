@@ -68,6 +68,16 @@ Console.disable()
 Console.enable() 
 ```
 
+### Navigation
+
+If inside the command input field use the arrow up and down key to navigate the history, if any. If there is a command which can be autocompleted to
+it will be shown below the input field, to select the suggestion simply click "tab", to traverse the list backward use "shift + tab".
+
+> :information_source: You can change the button to navigate the autocomplete entries via the console settings.
+
+To send a command to the console, simple press enter. If a command is written in red no matching command was found, if it is written in green you are good to go,
+keep in mind that this will not check if all the arguments are provided correctly.
+
 ## Example Project
 
 For further instructions on how to use this addon, checkout the example project. There are some custom commands in the example and some settings changed,
