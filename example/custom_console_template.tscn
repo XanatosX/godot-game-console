@@ -40,7 +40,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ConsoleAutocomplete" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="ConsoleAutocomplete" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 script = ExtResource("3_331dq")
@@ -56,8 +56,8 @@ text = "Go"
 script = ExtResource("4_7fr1q")
 command_input = NodePath("../VBoxContainer/ConsoleInput")
 
-[connection signal="autocomplete_found" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleAutocomplete" method="autocompletion_found"]
 [connection signal="autocomplete_found" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" method="autocompletion_found"]
+[connection signal="autocomplete_found" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleAutocomplete" method="autocompletion_found"]
 [connection signal="clear_input" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" method="clear"]
 [connection signal="clear_output" from="." to="PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput" method="clear_stored_text"]
 [connection signal="is_command_valid" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" method="is_command_valid"]
@@ -65,6 +65,7 @@ command_input = NodePath("../VBoxContainer/ConsoleInput")
 [connection signal="set_input" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" method="autocomplete_accepted"]
 [connection signal="meta_clicked" from="PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput" to="." method="url_requested"]
 [connection signal="autocomplete_accepted" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleAutocomplete" to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" method="autocomplete_accepted"]
+[connection signal="meta_clicked" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleAutocomplete" to="." method="url_requested"]
 [connection signal="reset_autocomplete" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleAutocomplete" method="force_reset"]
 [connection signal="text_changed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" to="." method="autocomplete_requested"]
 [connection signal="text_changed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" to="." method="check_if_is_valid_command"]

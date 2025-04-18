@@ -8,6 +8,7 @@ script = ExtResource("1_q0udj")
 
 [resource]
 script = ExtResource("1_5y6sn")
+pause_game_if_console_opened = false
 open_console_key = 96
 console_autocomplete_key = 4194306
 enable_autocomplete_color = true

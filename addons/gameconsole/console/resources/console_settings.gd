@@ -32,3 +32,6 @@ class_name ConsoleSettings extends Resource
 @export_group("Autocomplete")
 ## Service used to find a valid autocomplete command, you can add your own by extending the `AutocompleteService` resource.
 @export var autocomplete_service: AutocompleteService = preload("res://addons/gameconsole/resources/default_autocomplete_service.tres")
+@export var autocomplete_command_color: Color = Color.WHITE
+@export var autocomplete_argument_color_even: Color = Color.ORANGE
+@export var autocomplete_argument_color_odd: Color = Color.ORANGE_RED
