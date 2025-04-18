@@ -56,10 +56,10 @@ theme_override_font_sizes/font_size = 14
 placeholder_text = "Enter Command use up and down to navigate history"
 script = ExtResource("2_1bnin")
 
-[node name="ConsoleAutocomplete" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
-visible = false
+[node name="ConsoleAutocomplete" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/normal_font_size = 14
+fit_content = true
 script = ExtResource("4_jxlgx")
 
 [connection signal="autocomplete_found" from="." to="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" method="autocompletion_found"]
@@ -76,3 +76,4 @@ script = ExtResource("4_jxlgx")
 [connection signal="text_changed" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" to="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ConsoleAutocomplete" method="text_updated"]
 [connection signal="text_submitted" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" to="." method="request_command"]
 [connection signal="autocomplete_accepted" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ConsoleAutocomplete" to="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/ConsoleInput" method="autocomplete_accepted"]
+[connection signal="meta_clicked" from="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ConsoleAutocomplete" to="." method="url_requested"]
