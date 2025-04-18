@@ -10,44 +10,69 @@ signal copy_command_to_input(command: String)
 signal unknown_interaction_request(interaction: Interaction)
 
 @onready var console_template: PackedScene = preload("res://addons/gameconsole/console/console/default_console_template.tscn")
+@onready var console_settings: ConsoleSettings = preload("res://addons/gameconsole/resources/default_console_settings.tres")
 
 var _console_commands := {}
-var _used_template: PackedScene
 
 var _overlay_node = CanvasLayer.new()
 
-var _should_pause: bool = false
 var _console_shown: bool = false
 var _is_disabled: bool = false
 var _last_state: bool = false
 
 var _stored_console_content: String = ""
-var _console_key: int = KEY_QUOTELEFT
 var _first_time_open: bool = true
 var _console_information := {
 	"name": "Game Console",
 	"authors": "Xanatos",
-	"version": "0.3.2"
+	"version": "0.4.0"
 }
 
 func _ready():
 	_preregister_commands()
 	add_child(_overlay_node)
-	_used_template = console_template
 	process_mode = PROCESS_MODE_ALWAYS
 
 func get_console_information() -> Dictionary:
 	return _console_information
 
+## This method will allow you to define if the game should pause if the console opens up, since this will be removed in the future
+## Please use the `set_console_settings` or `update_console_settings` method instead
+## @deprecated
 func should_pause_on_open(pause: bool):
-	_should_pause = pause
+	console_settings.pause_game_if_console_opened = pause
 
+## This method will allow you to set the custom console template, since this will be removed in the future
+## Please use the `set_console_settings` or `update_console_settings` method instead
+## @deprecated
+func set_custom_command_template(scene: PackedScene):
+	console_settings.custom_template = scene
+
+## This method will properly be removed in the future, please use the `set_console_settings` or `update_console_settings` method instead
+## @deprecated
 func set_console_key(key: int):
-	_console_key = key
+	console_settings.open_console_key = key
+
+## Overwrite the console settings with the settings provided via that method.
+## Will return true if replacement did succeed
+func set_console_settings(new_settings: ConsoleSettings) -> bool:
+	if new_settings == null:
+		return false
+
+	console_settings = new_settings
+	return true
+
+## Update the console settings, your callable will require one argument
+## The data given to that argument will be ConsoleSettings, change the data as required.
+## You do now need to give any information back the update will be completed
+func update_console_settings(callable: Callable):
+	if callable.get_argument_count() != 1:
+		return
+	callable.call(console_settings)
 
 func _input(event):
 	if (event is InputEventKey):
-		if (event.get_physical_keycode_with_modifiers() == _console_key):
+		if (event.get_physical_keycode_with_modifiers() == console_settings.open_console_key):
 			if (event.is_pressed() && !_last_state):
 				toggle_console()
 			get_tree().get_root().set_input_as_handled()
@@ -63,9 +88,9 @@ func toggle_console():
 
 func show_console():
 	var template = null
-	if _used_template == null:
-		_used_template = console_template
-	template = _used_template.instantiate() as ConsoleTemplate
+	if console_settings.custom_template == null:
+		console_settings.custom_template = console_template
+	template = console_settings.custom_template.instantiate() as ConsoleTemplate
 	if template == null:
 		template = console_template.instantiate() as ConsoleTemplate
 	template.command_requested.connect(search_and_execute_command)
@@ -79,7 +104,7 @@ func show_console():
 	_overlay_node.add_child(template)
 	template.set_text(_stored_console_content)
 
-	if _should_pause:
+	if console_settings.pause_game_if_console_opened:
 		search_and_execute_command("pause")
 	_console_shown = true
 	if _first_time_open:
@@ -95,7 +120,7 @@ func hide_console():
 			_console_shown = false
 			console_closed.emit()
 			child.queue_free()
-			if _should_pause:
+			if console_settings.pause_game_if_console_opened:
 				search_and_execute_command("unpause")
 
 
@@ -109,10 +134,6 @@ func _clear_stored_console_content():
 func _check_command(text: String):
 	var executer = CommandDefinition.new(text)
 	is_current_command_valid.emit(_console_commands.has(executer.command))
-
-
-func set_custom_command_template(scene: PackedScene):
-	_used_template = scene
 
 func _register_custom_builtin_command(command: String,
 									  function: Callable,
