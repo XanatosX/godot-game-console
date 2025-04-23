@@ -68,10 +68,9 @@ func _update_selection_text():
 func autocompletion_found(data: Array[StrippedCommand]):
 	if !Console.console_settings.enable_autocomplete_color or !_autocomplete_color_active:
 		return
+
 	if !data.is_empty():
-		_change_color(Console.console_settings.autocomplete_available_color)
 		_autocomplete_found = true
-		return
 
 func autocomplete_accepted(autocomplete_text: String):
 	text = autocomplete_text
@@ -84,13 +83,16 @@ func autocomplete_accepted(autocomplete_text: String):
 	_autocomplete_color_active = true
 
 func is_command_valid(confirmed: bool):
-	if _autocomplete_found:
-		_autocomplete_found = false
-		return
 	if confirmed:
 		_change_color(Console.console_settings.existing_function_color)
-	else:
-		_change_color(Console.console_settings.non_existing_function_color)
+		return
+
+	if _autocomplete_found:
+		_change_color(Console.console_settings.autocomplete_available_color)
+		_autocomplete_found = false
+		return
+
+	_change_color(Console.console_settings.non_existing_function_color)
 
 func _change_color(color: Color):
 	add_theme_color_override("font_color", color)
