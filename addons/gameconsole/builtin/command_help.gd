@@ -21,11 +21,16 @@ func _get_help() -> String:
 	var author_list = information.get_or_add("authors", "UNKNOWN KEY: author")
 	var version = information.get_or_add("version", "UNKNOWN KEY: version")
 
-	var return_data = "[center][b][font_size=20]%s[/font_size][/b][/center]" % addon_name \
-					+  "[center][font_size=10]by %s[/font_size][/center]\n" % author_list \
-					+ "[center][font_size=10]Version: %s[/font_size][/center]\n" % version \
-					+ _get_description() \
-					+ "[center][url=%s]List commands[/url][/center]" % list_command_executer.get_as_string()
+	var return_data = "[center][b][font_size=20]%s[/font_size][/b][/center]" % addon_name
+
+	if Console.console_settings.show_addon_author:
+		return_data +=  "[center][font_size=10]by %s[/font_size][/center]\n" % author_list
+		
+	if Console.console_settings.show_addon_version:
+		return_data += "[center][font_size=10]Version: %s[/font_size][/center]\n" % version
+
+	return_data += _get_description() \
+				+ "[center][url=%s]List commands[/url][/center]" % list_command_executer.get_as_string()
 	return return_data
 
 func _get_description() -> String:

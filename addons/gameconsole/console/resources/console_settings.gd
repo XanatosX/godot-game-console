@@ -29,6 +29,13 @@ class_name ConsoleSettings extends Resource
 ## Custom console template, leave this empty to use the default one
 @export var custom_template: PackedScene
 
+@export_group("Help Command")
+## Should the author of the addon be shown with the help command?
+@export var show_addon_author: bool = true
+
+## Should the version of the addon be shown with the help command?
+@export var show_addon_version: bool = true
+
 @export_group("Autocomplete")
 ## Service used to find a valid autocomplete command, you can add your own by extending the `AutocompleteService` resource.
 @export var autocomplete_service: AutocompleteService = preload("res://addons/gameconsole/resources/default_autocomplete_service.tres")
