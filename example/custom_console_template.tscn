@@ -56,8 +56,8 @@ text = "Go"
 script = ExtResource("4_7fr1q")
 command_input = NodePath("../VBoxContainer/ConsoleInput")
 
-[connection signal="autocomplete_found" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" method="autocompletion_found"]
 [connection signal="autocomplete_found" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleAutocomplete" method="autocompletion_found"]
+[connection signal="autocomplete_found" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" method="autocompletion_found"]
 [connection signal="clear_input" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" method="clear"]
 [connection signal="clear_output" from="." to="PanelContainer/MarginContainer/VBoxContainer/ConsoleOutput" method="clear_stored_text"]
 [connection signal="is_command_valid" from="." to="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ConsoleInput" method="is_command_valid"]
