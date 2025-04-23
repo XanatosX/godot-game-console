@@ -1,0 +1,32 @@
+name: Feature Request
+description: Request a feature or change
+title: "[FEATURE]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking making suggestion to improve this addon!
+  - type: textarea
+    id: what-to-add
+    attributes:
+      label: What feature is missing?
+      description: Please tell us which feature is missing and would improve your experience
+      placeholder: Describe the missing feature
+    validations:
+      required: true
+  - type: textarea
+    id: desc
+    attributes:
+      label: Is there any alternative you consider?
+      placeholder: A description of any alternative you can think of if any.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      placeholder: Add any other context about the problem here.
+    validations:
+      required: false
+
