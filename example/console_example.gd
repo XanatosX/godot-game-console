@@ -3,11 +3,17 @@ extends Node2D
 # This file will explain to you how to register commands to the console and make
 # sure how to clean them up correctly
 
-# Always use the custom console scene instead of the default one
+## Always use the custom console scene instead of the default one
 @export var always_use_custom_console: bool = false
+
+## The template to use for a custom console template
 @export var custom_console_template: PackedScene = null
+
 # Replaces the default console key with F12
 @export var overwrite_console_toggle_key_with_f12: bool = false
+
+## The autocomplete service to use for autocomplete suggestions
+@export_enum("Contains", "Fuzzy") var autocomplete_service: int = 0;
 
 var counter: int = 0
 
@@ -15,10 +21,16 @@ var counter: int = 0
 func _ready() -> void:
 	_register_commands()
 	Console.unknown_interaction_request.connect(_handle_unknown_interaction)
-	if always_use_custom_console:
-		Console.update_console_settings(func(settings: ConsoleSettings): 
+	Console.update_console_settings(func(settings: ConsoleSettings): 
+		var service_to_use = ConsoleSettings.AutocompleteServiceProvider.CONTAINS
+		if autocomplete_service == 1:
+			service_to_use = ConsoleSettings.AutocompleteServiceProvider.FUZZY
+		settings.set_autocomplete_service(service_to_use)
+		if always_use_custom_console:
 			settings.custom_template = custom_console_template
-		)
+	)
+	
+
 
 func _exit_tree() -> void:
 	_unregister_commands()
