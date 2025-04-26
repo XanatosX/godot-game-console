@@ -150,15 +150,29 @@ func _register_builtin_command(command: Command):
 	command.built_in = true
 	_console_commands[command.get_command_name()] = command
 
-func register_custom_command(command: String,
-									  function: Callable,
-									  in_arguments : PackedStringArray = [],
-									  short_description: String = "",
-									  description: String = "",
-									  example: PackedStringArray = []):
+## Register a custom command with strong typed parameters
+func register_custom_strong_command(command: String,
+							 function: Callable,
+							 in_arguments: Array[CommandArgument],
+							 short_description: String = "",
+							 description: String = "",
+							 example: PackedStringArray = []):
 	var real_command = Command.new(command, function, in_arguments, short_description, description, example)
 	register_command(real_command)
 
+## Register a custom command without using the new parameter types
+func register_custom_command(command: String,
+							 function: Callable,
+							 in_arguments : PackedStringArray = [],
+							 short_description: String = "",
+							 description: String = "",
+							 example: PackedStringArray = []):
+	var converted_arguments: Array[CommandArgument] = []
+	for argument in in_arguments:
+		converted_arguments.append(CommandArgument.new(CommandArgument.Type.UNKNOWN, argument, ""))
+	register_custom_strong_command(command, function, converted_arguments, short_description, description, example)
+
+## Register a new command you already created the object instance for
 func register_command(command: Command):
 	var name = command.get_command_name()
 	command.built_in = false
@@ -180,8 +194,6 @@ func search_and_execute_command(command_text: String):
 	if command_to_run == null:
 		search_and_execute_command("not_found %s" % executer.command)
 		return
-	if executer.arguments.size() != command_to_run.arguments.size():
-		search_and_execute_command("argument_not_matching %s" % executer.command)
 	var result = command_to_run.execute(executer.arguments)
 	if result != "":
 		console_output.emit(result + "\n")

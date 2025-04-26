@@ -34,6 +34,30 @@ func _reload() -> String:
 	get_tree().reload_current_scene()
 	return "reloaded scene"
 ```
+> This will add an command where the arguments are provided as Strings, your method accepting those arguments will get strings as well
+> you will need to convert to the correct data type all by yourself.
+
+### Register a strong argument command
+
+```gdscript
+Console.register_custom_strong_command("spawn_entity",
+                                       _spawn_entity,
+                                       [CommandArgument.new(CommandArgument.Type.INT, "X Position", "The x position on screen for the entity"),
+                                        CommandArgument.new(CommandArgument.Type.INT, "y Position", "The y position on screen for the entity"),
+                                        CommandArgument.new(CommandArgument.Type.FLOAT, "time to life", "The time the entity should life in seconds")
+                                       ],
+                                       "Spawn an example entity at a global position",
+                                       "",
+                                       ["spawn_entity 200 300 4"]
+                                      )
+
+func _spawn_entity(pos_x: int, pos_y: int, ttl: float) -> String:
+    pass
+
+```
+> This will add a new argument but the argument types are defined, this will parse the input data automatically making it easier to use in your method. If a wrong type was provided to any
+> of the arguments an error will be thrown preventing the method execution.
+
 
 ### Unregister a command
 

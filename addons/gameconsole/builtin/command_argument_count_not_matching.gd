@@ -1,7 +1,11 @@
 extends CommandTemplate
 
 func create_command() -> Command:
-    var command = Command.new("argument not matching", _argument_count_not_matching, ["command_name"], "The provided arguments do not match")
+    var command = Command.new("argument not matching",
+							  _argument_count_not_matching,
+							  [CommandArgument.new(CommandArgument.Type.STRING, "Command Name", "")],
+							  "The provided arguments do not match"
+							  )
     command.is_hidden = true
     return command
 

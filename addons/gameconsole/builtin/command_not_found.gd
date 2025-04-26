@@ -1,7 +1,11 @@
 extends CommandTemplate
 
 func create_command() -> Command:
-    var command = Command.new("not found", _not_found, ["Command name"], "Command was not found")
+    var command = Command.new("not found",
+							  _not_found,
+							  [CommandArgument.new(CommandArgument.Type.STRING, "Command Name", "")],
+							  "Command was not found"
+							 )
     command.is_hidden = true
     return command
 
