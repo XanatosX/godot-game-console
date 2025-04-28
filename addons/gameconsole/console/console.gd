@@ -156,9 +156,10 @@ func register_custom_strong_command(command: String,
 							 in_arguments: Array[CommandArgument],
 							 short_description: String = "",
 							 description: String = "",
-							 example: PackedStringArray = []):
+							 example: PackedStringArray = []) -> bool:
 	var real_command = Command.new(command, function, in_arguments, short_description, description, example)
-	register_command(real_command)
+
+	return register_command(real_command)
 
 ## Register a custom command without using the new parameter types
 func register_custom_command(command: String,
@@ -166,17 +167,24 @@ func register_custom_command(command: String,
 							 in_arguments : PackedStringArray = [],
 							 short_description: String = "",
 							 description: String = "",
-							 example: PackedStringArray = []):
+							 example: PackedStringArray = []) -> bool:
 	var converted_arguments: Array[CommandArgument] = []
 	for argument in in_arguments:
 		converted_arguments.append(CommandArgument.new(CommandArgument.Type.UNKNOWN, argument, ""))
-	register_custom_strong_command(command, function, converted_arguments, short_description, description, example)
+	return register_custom_strong_command(command, function, converted_arguments, short_description, description, example)
 
 ## Register a new command you already created the object instance for
-func register_command(command: Command):
+func register_command(command: Command) -> bool:
+	if not command.is_valid_command():
+		var message = "Tried to register command %s which does use an invalid configuration!" % command.get_command_name()
+		print(message)
+		print_as_error(message)
+		return false
 	var name = command.get_command_name()
 	command.built_in = false
 	_console_commands[command.get_command_name()] = command
+
+	return true
 
 func remove_command(name: String) -> bool:
 	name = name.to_snake_case()
@@ -189,6 +197,7 @@ func remove_command(name: String) -> bool:
 	return _console_commands.erase(name)
 
 func search_and_execute_command(command_text: String):
+	command_text = command_text.strip_edges()
 	var executer = CommandDefinition.new(command_text)
 	var command_to_run = _console_commands.get(executer.command)
 	if command_to_run == null:

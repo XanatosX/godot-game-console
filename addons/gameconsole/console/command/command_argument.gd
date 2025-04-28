@@ -13,11 +13,25 @@ var _argument_type: Type
 var _argument_name: String
 var _argument_description: String = ""
 
-func _init(type: Type, name: String, description: String):
+var _is_optional: bool = false
+var _default_value: String = ""
+
+## Create a new command argument, if you provide a default value this command will be optional
+func _init(type: Type, name: String, description: String = "", default_value: String = ""):
 	_argument_type = type
 	_argument_name = name
 	_argument_description = description
-	
+
+	make_optional(default_value)
+
+func make_optional(default_value: String) -> bool:
+	if default_value.is_empty() or not is_valid_for(default_value):
+		return false
+
+	_default_value = default_value
+	_is_optional = true
+	return true
+
 func get_type() -> Type:
 	return _argument_type
 
@@ -73,3 +87,9 @@ func convert_data(data: String) -> Variant:
 			return int(data) == 1
 		_:
 			return null
+
+func is_optional() -> bool:
+	return _is_optional
+
+func get_default_value() -> String:
+	return _default_value

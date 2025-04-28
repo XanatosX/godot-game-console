@@ -43,7 +43,10 @@ func _display_autocomplete(data: StrippedCommand):
 		var color: Color = Console.console_settings.autocomplete_argument_color_odd
 		if argument_counter % 2 == 0:
 			color = Console.console_settings.autocomplete_argument_color_even
-		arguments += "[color=%s]%s[/color] " % [color.to_html(), argument.get_display_name()]
+		var optional = ""
+		if argument.is_optional():
+			optional = "[optional]"
+		arguments += "[color=%s]%s%s[/color] " % [color.to_html(), optional, argument.get_display_name()]
 		argument_counter += 1
 	arguments = arguments.trim_suffix(" ")
 
