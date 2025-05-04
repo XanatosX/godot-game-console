@@ -36,13 +36,13 @@ func _register_commands():
 									"Increase the counter",
 									"Command will increase a local counter",
 									["count_up 1", "count_up 3"])
-
+	
 	var count_down_command = Command.new("count_down",
 										 _count_down,
-										[CommandArgument.new(CommandArgument.Type.INT, "amount", "The amount to count down from the current counter")],
+										[CommandArgument.new(CommandArgument.Type.INT, "amount", "The amount to count down from the current counter", "1")],
 										"Decrease the internal counter",
 										"Command will decrease a local counter",
-										["count_down 1", "count_down 5"])
+										["count_down", "count_down 2", "count_down 5"])
 
 	Console.register_command(count_down_command)
 	Console.register_custom_command("reload", _reload, [], "Reload current scene")
@@ -50,7 +50,7 @@ func _register_commands():
 	 								_spawn_entity,
 									[CommandArgument.new(CommandArgument.Type.INT, "X Position", "The x position on screen for the entity"),
 									 CommandArgument.new(CommandArgument.Type.INT, "y Position", "The y position on screen for the entity"),
-									 CommandArgument.new(CommandArgument.Type.FLOAT, "time to life", "The time the entity should life in seconds")
+									 CommandArgument.new(CommandArgument.Type.FLOAT, "time to life", "The time the entity should life in seconds", "1"),
 									],
 									"Spawn an example entity at a global position",
 									"",
@@ -62,7 +62,7 @@ func _register_commands():
 
 	if !always_use_custom_console:
 		Console.register_custom_command("custom_console", _open_custom_console, [], "Open your custom console", "", [])
-		Console.register_custom_command("default_console", _open_default_console, [], "Open the default console", "", [])
+		Console.register_custom_command("default_console", _open_default_console, [], "Open the default console")
 	
 func _spawn_entity(pos_x: int, pos_y: int, ttl: float) -> String:
 	_trigger_spawn_entity(pos_x, pos_y, ttl)
