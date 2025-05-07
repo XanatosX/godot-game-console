@@ -1,5 +1,14 @@
 class_name ConsoleSettings extends Resource
 
+## Possible services to use for autocompletion suggestions
+enum AutocompleteServiceProvider{
+	## Check if a command dies contain the data entered in any way
+	CONTAINS,
+
+	## Use the Damerau-Levenshtein distance algorithm to find matching commands
+	FUZZY
+}
+
 @export_group("Open behavior")
 ## Pause the game if the console was opened
 @export var pause_game_if_console_opened: bool = false
@@ -48,3 +57,11 @@ class_name ConsoleSettings extends Resource
 
 ## Color to use for every odd argument of a autocomplete command
 @export var autocomplete_argument_color_odd: Color = Color.ORANGE_RED
+
+## Set a default autocomplete service by a given selection
+func set_autocomplete_service(type: AutocompleteServiceProvider):
+	match type:
+		AutocompleteServiceProvider.FUZZY:
+			autocomplete_service = load("res://addons/gameconsole/resources/fuzzy_autocomplete_service.tres")
+		AutocompleteServiceProvider.CONTAINS:
+			autocomplete_service = load("res://addons/gameconsole/resources/default_autocomplete_service.tres")
