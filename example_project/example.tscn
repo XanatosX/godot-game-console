@@ -3,6 +3,6 @@
 [ext_resource type="Script" uid="uid://dca7rs36lg7b8" path="res://example_project/console_example.gd" id="1_fquvx"]
 [ext_resource type="PackedScene" uid="uid://dc0s3ddmhpk6i" path="res://example_project/custom_console_template.tscn" id="2_iilx0"]
 
-[node name="Example" type="Node2D"]
+[node name="Example" type="Node2D" unique_id=1706568959]
 script = ExtResource("1_fquvx")
 custom_console_template = ExtResource("2_iilx0")
