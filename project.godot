@@ -8,17 +8,21 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="godot-game-console"
 config/tags=PackedStringArray("addon")
-run/main_scene="res://example/example.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+run/main_scene="res://example_project/example.tscn"
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Console="*res://addons/gameconsole/console/console.gd"
+Console="*uid://pcxyxcfyr2o2"
 
 [editor_plugins]
 
