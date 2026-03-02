@@ -1,23 +1,13 @@
-[gd_resource type="Resource" script_class="ConsoleSettings" load_steps=4 format=3 uid="uid://dnbbicywvdhfk"]
+[gd_resource type="Resource" script_class="ConsoleSettings" format=3 uid="uid://dnbbicywvdhfk"]
 
-[ext_resource type="Script" path="res://addons/gameconsole/console/resources/console_settings.gd" id="1_5y6sn"]
-[ext_resource type="Script" path="res://addons/gameconsole/console/autocompletion/autocomplete_service.gd" id="1_q0udj"]
+[ext_resource type="Script" uid="uid://chnqb31g64ty1" path="res://addons/gameconsole/console/resources/console_settings.gd" id="1_5y6sn"]
+[ext_resource type="Script" uid="uid://coc5e5r2dnaqc" path="res://addons/gameconsole/console/autocompletion/autocomplete_service.gd" id="1_q0udj"]
 
 [sub_resource type="Resource" id="Resource_mvw14"]
 script = ExtResource("1_q0udj")
 
 [resource]
 script = ExtResource("1_5y6sn")
-pause_game_if_console_opened = false
-open_console_key = 96
-console_autocomplete_key = 4194306
-enable_autocomplete_color = true
-autocomplete_available_color = Color(1, 0.65, 0, 1)
-non_existing_function_color = Color(0.85, 0, 0, 1)
-existing_function_color = Color(0, 0.65, 0, 1)
-show_addon_author = true
-show_addon_version = true
 autocomplete_service = SubResource("Resource_mvw14")
-autocomplete_command_color = Color(1, 1, 1, 1)
 autocomplete_argument_color_even = Color(1, 0.647059, 0, 1)
 autocomplete_argument_color_odd = Color(1, 0.270588, 0, 1)

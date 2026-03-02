@@ -9,7 +9,7 @@ signal copy_command_to_input(command: String)
 
 signal unknown_interaction_request(interaction: Interaction)
 
-@onready var console_template: PackedScene = preload("res://addons/gameconsole/console/console/default_console_template.tscn")
+@onready var console_template: PackedScene = preload("res://addons/gameconsole/entites/default_console/scenes/default_console_template.tscn")
 @onready var console_settings: ConsoleSettings = preload("res://addons/gameconsole/resources/default_console_settings.tres")
 
 var _console_commands := {}
@@ -25,7 +25,7 @@ var _first_time_open: bool = true
 var _console_information := {
 	"name": "Game Console",
 	"authors": "Xanatos",
-	"version": "0.5.0"
+	"version": "0.6.0"
 }
 
 func _ready():
@@ -208,7 +208,7 @@ func search_and_execute_command(command_text: String):
 		console_output.emit(result + "\n")
 
 func _preregister_commands():
-	_register_commands_in_directory("res://addons/gameconsole/builtin/")
+	_register_commands_in_directory("res://addons/gameconsole/builtin_commands/")
 
 func _register_commands_in_directory(directory: String):
 	var dir = DirAccess.open(directory)
