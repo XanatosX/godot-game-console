@@ -54,6 +54,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 14
 placeholder_text = "Enter Command use up and down to navigate history"
+keep_editing_on_text_submit = true
 script = ExtResource("3_wj52o")
 
 [node name="ConsoleAutocomplete" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1285106462]
