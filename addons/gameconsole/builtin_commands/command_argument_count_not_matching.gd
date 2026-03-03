@@ -1,7 +1,7 @@
 extends CommandTemplate
 
 func create_command() -> Command:
-    var command = Command.new("argument not matching",
+    var command: Command = Command.new("argument not matching",
 							  _argument_count_not_matching,
 							  [CommandArgument.new(CommandArgument.Type.STRING, "Command Name", "")],
 							  "The provided arguments do not match"
@@ -10,8 +10,8 @@ func create_command() -> Command:
     return command
 
 func _argument_count_not_matching(command_name: String) -> String:
-    var return_data = "";
-    var command = _console._console_commands[command_name]
-    var command_arguments = command.get_arguments()
+    var return_data: String = "";
+    var command: Command = _console._console_commands[command_name]
+    var command_arguments: String = command.get_arguments()
     return_data += "[color=red]The required arguments provided do not match the number of required arguments %s of command[/color]" % [command_arguments]
     return return_data

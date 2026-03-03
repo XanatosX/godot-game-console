@@ -1,7 +1,7 @@
 extends CommandTemplate
 
 func create_command() -> Command:
-	var command = Command.new("argument_not_valid",
+	var command: Command = Command.new("argument_not_valid",
 							  _argument_is_not_valid,
 							  [CommandArgument.new(CommandArgument.Type.STRING, "Command Name", ""),
 							   CommandArgument.new(CommandArgument.Type.STRING, "Argument Name", ""),

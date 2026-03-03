@@ -1,13 +1,13 @@
 class_name CommandDefinition extends Resource
 
-var command
+var command: String
 var arguments: PackedStringArray = []
 
-func _init(text: String):
+func _init(text: String) -> void:
     if text == "":
         command = "no_command_provided"
         return
-    var tokens = text.split(" ")
+    var tokens: PackedStringArray = text.split(" ")
     if tokens.size() == 1:
         command = tokens[0]
         return

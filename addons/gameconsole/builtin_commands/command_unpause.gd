@@ -1,7 +1,7 @@
 extends CommandTemplate
 
 func create_command() -> Command:
-    var command = Command.new("unpause", _unpause, [], "unpause the game")
+    var command: Command = Command.new("unpause", _unpause, [], "unpause the game")
     return command
 
 func _unpause() -> String:

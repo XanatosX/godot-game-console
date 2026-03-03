@@ -9,17 +9,17 @@ var _previously_accepted_autocomplete: bool = false
 
 var _console: GameConsole = null
 
-func _init():
+func _init() -> void:
 	bbcode_enabled = true
 	fit_content = true
 
-func _ready():
+func _ready() -> void:
 	_console = get_node("/root/Console")
 	if _console == null:
 		push_error("Could not receive global console")
 		return
 
-func text_updated(text: String):
+func text_updated(text: String) -> void:
 	if _found_complete:
 		return
 	if  _previously_accepted_autocomplete:
@@ -28,13 +28,13 @@ func text_updated(text: String):
 
 	force_reset()
 
-func force_reset():
+func force_reset() -> void:
 	_previously_accepted_autocomplete = false
 	_completion_index = 0
 	visible = false
 	text = ""
 
-func autocompletion_found(completions: Array[StrippedCommand]):
+func autocompletion_found(completions: Array[StrippedCommand]) -> void:
 	if completions.is_empty() or _previously_accepted_autocomplete:
 		return	
 	_completion_index = 0
@@ -42,30 +42,30 @@ func autocompletion_found(completions: Array[StrippedCommand]):
 	_display_autocomplete(_allowed_commands[_completion_index])
 	
 
-func _display_autocomplete(data: StrippedCommand):
-	var completion = data.command
+func _display_autocomplete(data: StrippedCommand) -> void:
+	var completion: String = data.command
 	visible = true
-	var arguments = ""
-	var argument_counter = 0
-	for argument in data.arguments:
+	var arguments: String = ""
+	var argument_counter: int = 0
+	for argument: CommandArgument in data.arguments:
 		var color: Color = _console.console_settings.autocomplete_argument_color_odd
 		if argument_counter % 2 == 0:
 			color = _console.console_settings.autocomplete_argument_color_even
-		var optional = ""
+		var optional: String = ""
 		if argument.is_optional():
 			optional = "[optional]"
 		arguments += "[color=%s]%s%s[/color] " % [color.to_html(), optional, argument.get_display_name()]
 		argument_counter += 1
 	arguments = arguments.trim_suffix(" ")
 
-	var interaction = Interaction.new()
+	var interaction: Interaction = Interaction.new()
 	interaction.from_raw("enter", completion)
 	text = "[color=%s][url=%s]%s[/url][/color] %s" % [_console.console_settings.autocomplete_command_color, interaction.get_as_string(), completion, arguments]
 	_found_complete = true
 	await get_tree().physics_frame
 	_found_complete = false
 
-func _input(event):
+func _input(event: InputEvent):
 	if _allowed_commands.is_empty():
 		return
 	if event is InputEventKey and visible:
