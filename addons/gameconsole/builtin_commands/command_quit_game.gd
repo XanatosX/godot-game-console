@@ -8,6 +8,6 @@ func create_command() -> Command:
     return command
 
 func _quit_game() -> String:
-    Console.get_tree().quit()
+    _console.get_tree().quit()
     return "[color=red]quitting[/color]"
 

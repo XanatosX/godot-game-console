@@ -5,7 +5,7 @@ func create_command() -> Command:
     return command
 
 func _list_commands() -> String:
-    var commands = Console.get_all_commands() as Array[Command]
+    var commands = _console.get_all_commands() as Array[Command]
     var built_in = commands.filter(func(command): return command.built_in) as Array[Command]
     var custom = commands.filter(func(command): return !command.built_in) as Array[Command]
     var return_data = "[color=yellow][b]All commands[/b][/color]\n"

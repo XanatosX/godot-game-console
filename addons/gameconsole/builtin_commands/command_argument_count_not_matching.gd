@@ -11,7 +11,7 @@ func create_command() -> Command:
 
 func _argument_count_not_matching(command_name: String) -> String:
     var return_data = "";
-    var command = Console._console_commands[command_name]
+    var command = _console._console_commands[command_name]
     var command_arguments = command.get_arguments()
     return_data += "[color=red]The required arguments provided do not match the number of required arguments %s of command[/color]" % [command_arguments]
     return return_data

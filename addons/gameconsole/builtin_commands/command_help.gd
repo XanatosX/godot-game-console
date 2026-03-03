@@ -15,7 +15,7 @@ func create_command() -> Command:
 	return command
 
 func _get_help() -> String:
-	var information = Console.get_console_information()
+	var information = _console.get_console_information()
 
 	var addon_name = information.get_or_add("name", "UNKNOWN KEY: name")
 	var author_list = information.get_or_add("authors", "UNKNOWN KEY: author")
@@ -23,10 +23,10 @@ func _get_help() -> String:
 
 	var return_data = "[center][b][font_size=20]%s[/font_size][/b][/center]" % addon_name
 
-	if Console.console_settings.show_addon_author:
+	if _console.console_settings.show_addon_author:
 		return_data +=  "[center][font_size=10]by %s[/font_size][/center]\n" % author_list
 		
-	if Console.console_settings.show_addon_version:
+	if _console.console_settings.show_addon_version:
 		return_data += "[center][font_size=10]Version: %s[/font_size][/center]\n" % version
 
 	return_data += _get_description() \

@@ -1,4 +1,4 @@
-class_name CommandDefinition extends Node
+class_name CommandDefinition extends Resource
 
 var command
 var arguments: PackedStringArray = []

@@ -5,6 +5,6 @@ func create_command() -> Command:
     return command
 
 func _pause() -> String:
-    Console.get_tree().paused = true
+    _console.get_tree().paused = true
     return "[color=red]paused[/color]"
 

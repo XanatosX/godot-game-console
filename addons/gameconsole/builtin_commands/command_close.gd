@@ -5,6 +5,6 @@ func create_command() -> Command:
     return command
 
 func _close() -> String:
-    Console.hide_console()
+    _console.hide_console()
     return ""
 

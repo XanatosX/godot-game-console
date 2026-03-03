@@ -5,6 +5,6 @@ func create_command() -> Command:
     return command
 
 func _unpause() -> String:
-    Console.get_tree().paused = false
+    _console.get_tree().paused = false
     return "[color=white]unpause[/color]"
 

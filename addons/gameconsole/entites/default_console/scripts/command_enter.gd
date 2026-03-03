@@ -9,9 +9,15 @@ var _save_file: String = "user://c_history"
 var _autocomplete_found: bool = false
 var _autocomplete_color_active: bool = false
 
+var _console: GameConsole = null
+
 func _ready():
 	text_submitted.connect(_submitted)
-	_autocomplete_color_active = Console.console_settings.enable_autocomplete_color
+	_console = get_node("/root/Console")
+	if _console == null:
+		push_error("Could not receive global console")
+		return
+	_autocomplete_color_active = _console.console_settings.enable_autocomplete_color
 	if !FileAccess.file_exists(_save_file):
 		return
 	var data = FileAccess.get_file_as_string(_save_file)
@@ -66,7 +72,7 @@ func _update_selection_text():
 		get_tree().get_root().set_input_as_handled()
 
 func autocompletion_found(data: Array[StrippedCommand]):
-	if !Console.console_settings.enable_autocomplete_color or !_autocomplete_color_active:
+	if !_console.console_settings.enable_autocomplete_color or !_autocomplete_color_active:
 		return
 
 	if !data.is_empty():
@@ -84,15 +90,15 @@ func autocomplete_accepted(autocomplete_text: String):
 
 func is_command_valid(confirmed: bool):
 	if confirmed:
-		_change_color(Console.console_settings.existing_function_color)
+		_change_color(_console.console_settings.existing_function_color)
 		return
 
 	if _autocomplete_found:
-		_change_color(Console.console_settings.autocomplete_available_color)
+		_change_color(_console.console_settings.autocomplete_available_color)
 		_autocomplete_found = false
 		return
 
-	_change_color(Console.console_settings.non_existing_function_color)
+	_change_color(_console.console_settings.non_existing_function_color)
 
 func _change_color(color: Color):
 	add_theme_color_override("font_color", color)

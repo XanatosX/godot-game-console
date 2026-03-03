@@ -10,7 +10,7 @@ func create_command() -> Command:
     return command
 
 func _manual(command_name: String) -> String:
-    var command = Console.get_specific_command(command_name)
+    var command = _console.get_specific_command(command_name)
     if command == null or command.is_hidden:
         return "[color=red]No command with name %s was found[/color]" % command_name
     return command.get_man_page()
