@@ -12,7 +12,7 @@ var built_in: bool = false
 
 var self_man_link: Interaction
 var self_enter_link: Interaction
-var self_example_links := {}
+var self_example_links: Dictionary = {}
 
 var _is_valid: bool = true
 
@@ -40,7 +40,7 @@ func _init(command_name: String,
 	_validate_self()
 
 	for example in examples:
-		var example_link : Interaction = Interaction.new()
+		var example_link: Interaction = Interaction.new()
 		example_link.from_raw("enter", example)
 		self_example_links[example] = example_link
 
@@ -49,17 +49,17 @@ func setup(console: GameConsole) -> void:
 
 func _validate_self():
 	var optional_mode: bool = false
-	for argument in arguments:
+	for argument: CommandArgument in arguments:
 		if optional_mode and not argument.is_optional():
 			_is_valid = false
 			return
 		if argument.is_optional():
 			optional_mode = true
 
-func is_valid_command():
+func is_valid_command() -> bool:
 	return _is_valid
 
-func get_command_name() -> String :
+func get_command_name() -> String:
 	return command
 
 func execute(in_arguments: Array) -> String:
@@ -79,15 +79,16 @@ func execute(in_arguments: Array) -> String:
 
 
 	var converted_data: Array[Variant] = []
-	for i in arguments.size():
+	for i: int in arguments.size():
 		var raw_data: String = _get_data_at_position(in_arguments, arguments[i], i)
-		var data = arguments[i].convert_data(raw_data)
+		var data: Variant = arguments[i].convert_data(raw_data)
 		converted_data.append(data)
 
-	var data = function.callv(converted_data)
-	if data == null:
-		data = ""
-	return data
+	var command_result: Variant = function.callv(converted_data)
+	var return_value: String = ""
+	if command_result is String:
+		return_value = command_result
+	return return_value
 
 func _get_data_at_position(in_arguments: Array, current_argument: CommandArgument, data_index: int) -> String:
 	var value: String = ""
@@ -101,7 +102,7 @@ func _get_data_at_position(in_arguments: Array, current_argument: CommandArgumen
 
 func _validate_arguments(in_arguments: Array) -> bool:
 	var is_valid: bool = true
-	for i in arguments.size():
+	for i: int in arguments.size():
 		var current_argument_type = arguments[i]
 
 		var value: String = _get_data_at_position(in_arguments, current_argument_type, i)
@@ -120,11 +121,11 @@ func _validate_arguments(in_arguments: Array) -> bool:
 	return is_valid
 		
 
-func get_interactive_command():
+func get_interactive_command() -> String:
 	var url_part = "[url=%s]" % self_man_link.get_as_string()
 	return "%s%s %s[/url]" % [url_part, get_command_name(), get_arguments()]
 
-func get_command_short_description():
+func get_command_short_description() -> String:
 	return short_description
 
 func get_arguments() -> String:
@@ -134,26 +135,26 @@ func get_arguments() -> String:
 	return return_arguments
 
 func as_stripped() -> StrippedCommand:
-	var return_data = StrippedCommand.new()
+	var return_data: StrippedCommand = StrippedCommand.new()
 	return_data.command = command
 	return_data.arguments = arguments
 	return return_data
 
 func get_man_page() -> String:
-	var command_url = "[url=%s]" % self_enter_link.get_as_string()
-	var return_text = "%s[b]%s[/b][/url]\n\n" % [command_url, command]
-	var description_to_show = description
+	var command_url: String = "[url=%s]" % self_enter_link.get_as_string()
+	var return_text: String = "%s[b]%s[/b][/url]\n\n" % [command_url, command]
+	var description_to_show: String = description
 	if description_to_show == "":
 		description_to_show = short_description
 	return_text += "%s\n" % description_to_show
 	if arguments.size() > 0:
 		return_text += "\n[i][b]Arguments[/b][/i]\n\n"
 		return_text += "[ul]"
-		for argument in arguments:
+		for argument: CommandArgument in arguments:
 			if argument.is_optional():
 				return_text += "[Optional] "
 			return_text += "%s" % argument.get_display_name()
-			var argument_description = argument.get_description()
+			var argument_description: String = argument.get_description()
 			if not argument_description.is_empty():
 				return_text += " -> %s" % argument_description
 			

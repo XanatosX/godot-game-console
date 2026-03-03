@@ -11,17 +11,17 @@ func _init():
 	enter_man_command.from_raw("enter", "man")
 
 func create_command() -> Command:
-	var command = Command.new("help", _get_help, [], "Get help for this console")
+	var command: Command = Command.new("help", _get_help, [], "Get help for this console")
 	return command
 
 func _get_help() -> String:
-	var information = _console.get_console_information()
+	var information: Dictionary = _console.get_console_information()
 
-	var addon_name = information.get_or_add("name", "UNKNOWN KEY: name")
-	var author_list = information.get_or_add("authors", "UNKNOWN KEY: author")
-	var version = information.get_or_add("version", "UNKNOWN KEY: version")
+	var addon_name: String = information.get_or_add("name", "UNKNOWN KEY: name")
+	var author_list: String = information.get_or_add("authors", "UNKNOWN KEY: author")
+	var version: String = information.get_or_add("version", "UNKNOWN KEY: version")
 
-	var return_data = "[center][b][font_size=20]%s[/font_size][/b][/center]" % addon_name
+	var return_data: String = "[center][b][font_size=20]%s[/font_size][/b][/center]" % addon_name
 
 	if _console.console_settings.show_addon_author:
 		return_data +=  "[center][font_size=10]by %s[/font_size][/center]\n" % author_list

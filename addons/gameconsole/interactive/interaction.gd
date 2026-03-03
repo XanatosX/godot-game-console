@@ -7,13 +7,13 @@ var _additional_data: Dictionary
 var _json_data: String
 
 ## Parse an existing dictionary into an interaction object
-func from_dictionary(data: Dictionary):
+func from_dictionary(data: Dictionary) -> void:
     _type = data.get_or_add("type", "UNKNOWN")
     _data = data.get_or_add("data", "not_found")
     _additional_data = data.get_or_add("additional", {})
 
 ## Fill the information from raw information
-func from_raw(type: String, data: String, additional_data: Dictionary = {}):
+func from_raw(type: String, data: String, additional_data: Dictionary = {}) -> void:
     _type = type
     _data = data
     _additional_data = additional_data

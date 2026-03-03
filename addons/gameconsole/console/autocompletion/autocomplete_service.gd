@@ -7,9 +7,12 @@ func setup(console: GameConsole) -> void:
 	_console = console
 
 func search_autocomplete(typed: String) -> Array[StrippedCommand]:
+	var return_data: Array[StrippedCommand] = []
 	if _console == null:
 		return []
-	var return_data = _console._get_autocomplete_commands().filter(func(command): return command.command.find(typed) == 0)
+	for stripped_command: Variant in _console._get_autocomplete_commands().filter(func(command): return command.command.find(typed) == 0):
+		if stripped_command is StrippedCommand:
+			return_data.append(stripped_command)
 	return_data.sort_custom(_length_sort)
 	return return_data
 

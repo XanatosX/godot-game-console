@@ -17,7 +17,7 @@ var _is_optional: bool = false
 var _default_value: String = ""
 
 ## Create a new command argument, if you provide a default value this command will be optional
-func _init(type: Type, name: String, description: String = "", default_value: String = ""):
+func _init(type: Type, name: String, description: String = "", default_value: String = "") -> void:
 	_argument_type = type
 	_argument_name = name
 	_argument_description = description

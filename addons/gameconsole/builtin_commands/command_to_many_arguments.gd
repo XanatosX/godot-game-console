@@ -1,7 +1,7 @@
 extends CommandTemplate
 
 func create_command() -> Command:
-    var command = Command.new("to_many_arguments",
+    var command: Command = Command.new("to_many_arguments",
 							  _to_many_arguments,
 							  [CommandArgument.new(CommandArgument.Type.STRING, "Command Name"),
 							   CommandArgument.new(CommandArgument.Type.INT, "Number of given arguments"),
