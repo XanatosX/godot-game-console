@@ -39,13 +39,11 @@ func _register_commands() -> void:
 	
 	var count_down_command: Command = Command.new("count_down",
 												 _count_down,
-												 [CommandArgument.new(CommandArgument.Type.INT, "amount", "The amount to count down from the current counter", "1")],
+												 [CommandArgument.new(CommandArgument.Type.INT, "amount", "The amount to count down from the current counter", "1", [1, 2, 5])],
 												 "Decrease the internal counter",
 												 "Command will decrease a local counter",
 												 ["count_down", "count_down 2", "count_down 5"])
 
-	
-	
 	Console.register_command(count_down_command)
 	if Console.command_is_registered(count_down_command):
 		print("%s was successfully registered" % count_down_command.get_command_name())
@@ -54,9 +52,9 @@ func _register_commands() -> void:
 	Console.register_custom_command("reload", _reload, [], "Reload current scene")
 	Console.register_custom_strong_command("spawn_entity",
 	 								_spawn_entity,
-									[CommandArgument.new(CommandArgument.Type.INT, "X Position", "The x position on screen for the entity"),
-									 CommandArgument.new(CommandArgument.Type.INT, "y Position", "The y position on screen for the entity"),
-									 CommandArgument.new(CommandArgument.Type.FLOAT, "time to life", "The time the entity should life in seconds", "1"),
+									[CommandArgument.new(CommandArgument.Type.INT, "X Position", "The x position on screen for the entity", "", [600, 800]),
+									 CommandArgument.new(CommandArgument.Type.INT, "y Position", "The y position on screen for the entity", "", [600, 800, 1000]),
+									 CommandArgument.new(CommandArgument.Type.FLOAT, "time to life", "The time the entity should life in seconds", "1", [1.0, 2.0, 5.0, 10.0]),
 									],
 									"Spawn an example entity at a global position",
 									"",
