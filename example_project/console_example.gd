@@ -44,7 +44,13 @@ func _register_commands() -> void:
 												 "Command will decrease a local counter",
 												 ["count_down", "count_down 2", "count_down 5"])
 
+	
+	
 	Console.register_command(count_down_command)
+	if Console.command_is_registered(count_down_command):
+		print("%s was successfully registered" % count_down_command.get_command_name())
+	if Console.command_name_is_registered(count_down_command.get_command_name()):
+		print("%s was successfully registered" % count_down_command.get_command_name())
 	Console.register_custom_command("reload", _reload, [], "Reload current scene")
 	Console.register_custom_strong_command("spawn_entity",
 	 								_spawn_entity,
