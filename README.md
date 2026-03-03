@@ -17,11 +17,12 @@ To install the addon download the source files and put the "addons" folder on a 
 
 Checkout this part of the [Godot documentation][installing-and-enable-plugin].
 
+
+> :information_source: The following information is not relevant after version 0.6.0.
+> 
 > :warning: If you install the plugin and it is not active it is possible that godot will throw errors that the identifier "Console" cannot be found.
 >To fix this issues you just need to activate the plugin, this error is a result of an dependency to that global instance, which is not present after install throwing an error on Godot automatic code check.
 
-![Installation error](https://i.imgur.com/5HuV62g.png)
-*Error listed because Console is not loaded just yet, this is normal*
 
 ## Quickstart
 
