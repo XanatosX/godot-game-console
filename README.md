@@ -1,10 +1,10 @@
 # Godot Game Console
 
-This Godot addon will add a game console to your game. This console can be used to run commands from within your game.
+This Godot add-on will add a game console to your game. This console can be used to run commands from within your game.
 
-To learn how to add and remove custom commands please checkout the example [script][example-gdscript] or check the quickstart secion down below.
+To learn how to add and remove custom commands please checkout the example [script][example-gdscript] or check the quick start section down below.
 
-I do know there is a addon like this already in development, check it out at the end of this readme.
+I do know there is a add-on like this already in development, check it out at the end of this readme.
 I still wanted to create my own interpretation of this used in games I created.
 But as I already developed it I decided to make it public and give something back to the Godot developer community.
 
@@ -13,14 +13,14 @@ But as I already developed it I decided to make it public and give something bac
 
 ## How to install
 
-To install the addon download the source files and put the "addons" folder on a root level to your project. After that enable the plugin via the Godot plugin menu.
+To install the add-on download the source files and put the "add-ons" folder on a root level to your project. After that enable the plugin via the Godot plugin menu.
 
 Checkout this part of the [Godot documentation][installing-and-enable-plugin].
 
 
 > :information_source: The following information is not relevant after version 0.6.0.
 > 
-> :warning: If you install the plugin and it is not active it is possible that godot will throw errors that the identifier "Console" cannot be found.
+> :warning: If you install the plugin and it is not active it is possible that Godot will throw errors that the identifier "Console" cannot be found.
 >To fix this issues you just need to activate the plugin, this error is a result of an dependency to that global instance, which is not present after install throwing an error on Godot automatic code check.
 
 
@@ -64,6 +64,22 @@ func _spawn_entity(pos_x: int, pos_y: int, ttl: float) -> String:
 
 ```gdscript
 Console.remove_command("reload")
+```
+
+### Check if a command does exist - Version 0.6.2
+
+Check for command by command object
+
+```gdscript
+if Console.command_is_registered(my_custom_command):
+    print("command %s is registerd" % my_custom_command.get_command_name())
+```
+
+Or by name
+
+```gdscript
+if Console.command_name_is_registered(my_custom_command.get_command_name()):
+    print("command %s is registerd" % my_custom_command.get_command_name())
 ```
 
 ### Other important Options
@@ -122,9 +138,24 @@ This is a list with build in commands and there purpose
 | quit          | Close the game, does not work on a web build.                                                                         | quit          |
 | help          | Get help about the console, this will list the name, version and a short help text                                    | help          |
 
+# BREAKING_CHANGES:
+
+## Version 0.5.0 -> 0.6.0
+
+Version did update to Godot 4.6, older engine version might not work anymore. Godot 4.4 still seems to be fine.
+
+## Version 0.4.0 -> 0.5.0
+
+This version will add some breaking changes, if you create a
+command instance you cannot use the PackedString array anymore. Instead
+create a new "CommandArgument" providing the type as first parameter,
+the name as the second and if needed a description of the parameter as
+last. See the example project or readme for more details 
+
+
 ## Special Thanks to
 
-jitspoe because his addon did influenced the creation for my interpretation of it. So check it our as well, it might more more suitable for you.
+jitspoe because his add-on did influenced the creation for my interpretation of it. So check it our as well, it might more more suitable for you.
 
 - https://github.com/jitspoe/godot-console
 
