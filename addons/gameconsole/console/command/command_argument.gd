@@ -26,7 +26,7 @@ func _init(type: Type, name: String, description: String = "", default_value: St
 	_add_predefined_values(predefined_values)
 	make_optional(default_value)
 
-func _add_predefined_values(predefined_values: Array):
+func _add_predefined_values(predefined_values: Array) -> void:
 	if predefined_values.size() == 0:
 		return
 	for value in predefined_values:

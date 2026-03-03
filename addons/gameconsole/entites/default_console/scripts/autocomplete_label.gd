@@ -155,7 +155,7 @@ func _argument_prediction_got_accepted() -> void:
 		arguments = ""
 	autocomplete_accepted.emit("%s%s %s" % [_last_command_definition.command, arguments, _current_autocomplete_value])
 
-func _set_correct_argument_index(text: String):
+func _set_correct_argument_index(text: String) -> void:
 	var space_count: int = text.count(" ")
 	var _previous_selected: int= _selected_predefined_value
 	_selected_predefined_value = space_count - 1
