@@ -1,4 +1,4 @@
-class_name Command extends Node
+class_name Command extends Resource
 
 var command: String
 var function: Callable
@@ -15,6 +15,8 @@ var self_enter_link: Interaction
 var self_example_links := {}
 
 var _is_valid: bool = true
+
+var _console: GameConsole = null
 
 func _init(command_name: String,
 		   functionality: Callable,
@@ -38,9 +40,12 @@ func _init(command_name: String,
 	_validate_self()
 
 	for example in examples:
-		var example_link = Interaction.new()
+		var example_link : Interaction = Interaction.new()
 		example_link.from_raw("enter", example)
 		self_example_links[example] = example_link
+
+func setup(console: GameConsole) -> void:
+	_console = console
 
 func _validate_self():
 	var optional_mode: bool = false
@@ -58,13 +63,15 @@ func get_command_name() -> String :
 	return command
 
 func execute(in_arguments: Array) -> String:
+	if _console == null:
+		push_error("Missing console addon singleton, please check if plugin is active")
 	if arguments.size() > 0 and in_arguments.size() < arguments.filter(func(argument): return not argument.is_optional()).size():
-		Console.search_and_execute_command("argument_not_matching %s" % command)
+		_console.search_and_execute_command("argument_not_matching %s" % command)
 		return ""
 
 	if arguments.size() > 0 and in_arguments.size() > arguments.size():
-		Console.search_and_execute_command("to_many_arguments %s %s %s" % [command, in_arguments.size(), arguments.size()])
-		Console.search_and_execute_command("man %s" % [command])
+		_console.search_and_execute_command("to_many_arguments %s %s %s" % [command, in_arguments.size(), arguments.size()])
+		_console.search_and_execute_command("man %s" % [command])
 		return ""
 	
 	if !_validate_arguments(in_arguments):
@@ -107,7 +114,7 @@ func _validate_arguments(in_arguments: Array) -> bool:
 										   current_argument_type.Type.keys()[current_argument_type.get_type()],
 										   value
 										  ]
-			Console.search_and_execute_command(data)
+			_console.search_and_execute_command(data)
 			return is_valid
 
 	return is_valid
@@ -157,9 +164,9 @@ func get_man_page() -> String:
 		return_text += "\n\n[i][b]Examples[/b][/i]\n\n"
 		return_text += "[ul]"
 		for example in examples:
-			var link = self_example_links[example] as Interaction
+			var link: Interaction = self_example_links[example] as Interaction
 			
-			var example_url = "[url=%s]" % link.get_as_string()
+			var example_url: String = "[url=%s]" % link.get_as_string()
 			return_text += "%s%s[/url]\n" % [example_url, example]
 		return_text += "[/ul]"
 

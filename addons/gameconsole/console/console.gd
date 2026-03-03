@@ -25,7 +25,7 @@ var _first_time_open: bool = true
 var _console_information := {
 	"name": "Game Console",
 	"authors": "Xanatos",
-	"version": "0.6.0"
+	"version": "0.6.1"
 }
 
 func _ready():
@@ -146,9 +146,7 @@ func _register_custom_builtin_command(command: String,
 	_register_builtin_command(real_command)
 
 func _register_builtin_command(command: Command):
-	var name = command.get_command_name()
-	command.built_in = true
-	_console_commands[command.get_command_name()] = command
+	_add_command(command, true)
 
 ## Register a custom command with strong typed parameters
 func register_custom_strong_command(command: String,
@@ -180,11 +178,16 @@ func register_command(command: Command) -> bool:
 		print(message)
 		print_as_error(message)
 		return false
-	var name = command.get_command_name()
-	command.built_in = false
-	_console_commands[command.get_command_name()] = command
+	_add_command(command, false)
 
 	return true
+
+func _add_command(command: Command, built_in: bool) -> void:
+	var name = command.get_command_name()
+	command.setup(self)
+	command.built_in = built_in
+	_console_commands[command.get_command_name()] = command
+
 
 func remove_command(name: String) -> bool:
 	name = name.to_snake_case()
@@ -211,7 +214,7 @@ func _preregister_commands():
 	_register_commands_in_directory("res://addons/gameconsole/builtin_commands/")
 
 func _register_commands_in_directory(directory: String):
-	var dir = DirAccess.open(directory)
+	var dir: DirAccess = DirAccess.open(directory)
 	var loaded_scripts: Array[Resource]
 	var files = dir.get_files()
 	for file in files:
@@ -224,11 +227,11 @@ func _register_commands_in_directory(directory: String):
 	for command in loaded_scripts:
 		var loaded_command = command.new() as CommandTemplate
 		if loaded_command != null:
-			var real_command = loaded_command.create_command() as Command
+			loaded_command.setup(self)
+			var real_command: Command = loaded_command.create_command() as Command
 			if real_command == null:
 				continue
-			real_command.built_in = true
-			_console_commands[real_command.get_command_name()] = real_command
+			_add_command(real_command, true)
 
 func _get_autocomplete_commands() -> Array[StrippedCommand]:
 	var return_data: Array[StrippedCommand] = []

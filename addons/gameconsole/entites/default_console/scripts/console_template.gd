@@ -17,6 +17,8 @@ signal autocomplete_found(autocompletion: Array[StrippedCommand])
 @export var console_input: LineEdit
 @export var console_send_button: Button
 
+var _console: GameConsole = null
+
 func _ready():
 	if console_content_output == null:
 		printerr("GameConsole template is missing output window")
@@ -25,8 +27,15 @@ func _ready():
 	if console_input == null:
 		printerr("GameConsole template is missing input box")
 		queue_free()
+	
 
-	Console._register_custom_builtin_command("clear", clear_command,  [], "Command to clear the console window")
+	_console = get_node("/root/Console")
+	if _console == null:
+		push_error("Could not receive global console")
+		return
+	_console._register_custom_builtin_command("clear", clear_command,  [], "Command to clear the console window")
+	if _console.console_settings.autocomplete_service != null:
+		_console.console_settings.autocomplete_service.setup(_console)
 
 	console_input.grab_focus()
 
@@ -47,10 +56,10 @@ func clear_command():
 	clear_output.emit()
 
 func autocomplete_requested(typed: String):
-	if Console.console_settings.autocomplete_service == null:
+	if _console.console_settings.autocomplete_service == null:
 		return
 
-	var matches = Console.console_settings.autocomplete_service.search_autocomplete(typed)
+	var matches = _console.console_settings.autocomplete_service.search_autocomplete(typed)
 	if matches.size() > 0:
 		autocomplete_found.emit(matches)
 
@@ -70,7 +79,7 @@ func url_requested(data):
 	var json_parser = JSON.new()
 	var parsed_json = json_parser.parse(data)
 	if parsed_json != OK:
-		Console.print_as_error("url data was not correctly parsed")
+		_console.print_as_error("url data was not correctly parsed")
 		return
 	var dictionary = json_parser.get_data()
 	var interaction = Interaction.new()

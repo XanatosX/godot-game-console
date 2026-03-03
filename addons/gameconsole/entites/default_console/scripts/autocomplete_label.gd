@@ -7,9 +7,17 @@ var _allowed_commands: Array[StrippedCommand]
 var _completion_index: int = 0
 var _previously_accepted_autocomplete: bool = false
 
+var _console: GameConsole = null
+
 func _init():
 	bbcode_enabled = true
 	fit_content = true
+
+func _ready():
+	_console = get_node("/root/Console")
+	if _console == null:
+		push_error("Could not receive global console")
+		return
 
 func text_updated(text: String):
 	if _found_complete:
@@ -40,9 +48,9 @@ func _display_autocomplete(data: StrippedCommand):
 	var arguments = ""
 	var argument_counter = 0
 	for argument in data.arguments:
-		var color: Color = Console.console_settings.autocomplete_argument_color_odd
+		var color: Color = _console.console_settings.autocomplete_argument_color_odd
 		if argument_counter % 2 == 0:
-			color = Console.console_settings.autocomplete_argument_color_even
+			color = _console.console_settings.autocomplete_argument_color_even
 		var optional = ""
 		if argument.is_optional():
 			optional = "[optional]"
@@ -52,7 +60,7 @@ func _display_autocomplete(data: StrippedCommand):
 
 	var interaction = Interaction.new()
 	interaction.from_raw("enter", completion)
-	text = "[color=%s][url=%s]%s[/url][/color] %s" % [Console.console_settings.autocomplete_command_color, interaction.get_as_string(), completion, arguments]
+	text = "[color=%s][url=%s]%s[/url][/color] %s" % [_console.console_settings.autocomplete_command_color, interaction.get_as_string(), completion, arguments]
 	_found_complete = true
 	await get_tree().physics_frame
 	_found_complete = false
@@ -61,7 +69,7 @@ func _input(event):
 	if _allowed_commands.is_empty():
 		return
 	if event is InputEventKey and visible:
-		if event.get_physical_keycode_with_modifiers() == Console.console_settings.console_autocomplete_key:
+		if event.get_physical_keycode_with_modifiers() == _console.console_settings.console_autocomplete_key:
 			if event.pressed:
 				_previously_accepted_autocomplete = true
 				autocomplete_accepted.emit(_allowed_commands[_completion_index].command)
@@ -70,7 +78,7 @@ func _input(event):
 					_completion_index = 0
 				_display_autocomplete(_allowed_commands[_completion_index])
 
-		if event.get_physical_keycode_with_modifiers() == Console.console_settings.console_autocomplete_key + KEY_MASK_SHIFT:
+		if event.get_physical_keycode_with_modifiers() == _console.console_settings.console_autocomplete_key + KEY_MASK_SHIFT:
 			if event.pressed:
 				_previously_accepted_autocomplete = true
 				_completion_index -= 2
