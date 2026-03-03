@@ -25,7 +25,7 @@ var _first_time_open: bool = true
 var _console_information: Dictionary = {
 	"name": "Game Console",
 	"authors": "Xanatos",
-	"version": "0.6.1"
+	"version": "0.6.2"
 }
 
 func _ready() -> void:
