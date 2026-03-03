@@ -133,7 +133,7 @@ func _clear_stored_console_content() -> void:
 
 func _check_command(text: String) -> void:
 	var executer: CommandDefinition = CommandDefinition.new(text)
-	is_current_command_valid.emit(_console_commands.has(executer.command))
+	is_current_command_valid.emit(command_name_is_registered(executer.command))
 
 func _register_custom_builtin_command(command: String,
 									  function: Callable,
@@ -191,13 +191,19 @@ func _add_command(command: Command, built_in: bool) -> void:
 
 func remove_command(name: String) -> bool:
 	name = name.to_snake_case()
-	if !_console_commands.has(name):
+	if not command_name_is_registered(name):
 		return true
 	var command: Command = _console_commands[name]
 	if command.built_in:
 		return false
 
 	return _console_commands.erase(name)
+
+func command_is_registered(command: Command) -> bool:
+	return _console_commands.has(command.get_command_name())
+
+func command_name_is_registered(name: String) -> bool:
+	return _console_commands.has(name)
 
 func search_and_execute_command(command_text: String) -> void:
 	command_text = command_text.strip_edges()
@@ -275,7 +281,7 @@ func get_all_commands() -> Array:
 
 ## Get a specific command or null if nothing was found
 func get_specific_command(command_name: String) -> Command:
-	if !_console_commands.has(command_name):
+	if not command_name_is_registered(command_name):
 		return null	
 	return _console_commands[command_name]
 
