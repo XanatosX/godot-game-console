@@ -46,5 +46,8 @@ class_name ConsoleSettings extends Resource
 ## Color to use for every even argument of a autocomplete command
 @export var autocomplete_argument_color_even: Color = Color.ORANGE
 
+## Color to use for every even argument of a autocomplete command
+@export var autocomplete_argument_selected_predefined: Color = Color.RED
+
 ## Color to use for every odd argument of a autocomplete command
 @export var autocomplete_argument_color_odd: Color = Color.ORANGE_RED

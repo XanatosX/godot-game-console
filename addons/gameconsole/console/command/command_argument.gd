@@ -15,14 +15,29 @@ var _argument_description: String = ""
 
 var _is_optional: bool = false
 var _default_value: String = ""
+var _predefined_values: Array
 
 ## Create a new command argument, if you provide a default value this command will be optional
-func _init(type: Type, name: String, description: String = "", default_value: String = "") -> void:
+func _init(type: Type, name: String, description: String = "", default_value: String = "", predefined_values: Array = []) -> void:
 	_argument_type = type
 	_argument_name = name
 	_argument_description = description
 
+	_add_predefined_values(predefined_values)
 	make_optional(default_value)
+
+func _add_predefined_values(predefined_values: Array) -> void:
+	if predefined_values.size() == 0:
+		return
+	for value in predefined_values:
+		if value is String and get_type() == Type.STRING:
+			_predefined_values.append(value)
+		if value is int and get_type() == Type.INT:
+			_predefined_values.append(value)
+		if value is bool and get_type() == Type.BOOL:
+			_predefined_values.append(value)
+		if value is float and get_type() == Type.FLOAT:
+			_predefined_values.append(value)
 
 func make_optional(default_value: String) -> bool:
 	if default_value.is_empty() or not is_valid_for(default_value):
@@ -93,3 +108,6 @@ func is_optional() -> bool:
 
 func get_default_value() -> String:
 	return _default_value
+
+func get_predefined_arguments() -> Array:
+	return _predefined_values

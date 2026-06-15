@@ -12,6 +12,7 @@ var _autocomplete_color_active: bool = false
 var _console: GameConsole = null
 
 func _ready() -> void:
+	keep_editing_on_text_submit = true
 	text_submitted.connect(_submitted)
 	_console = get_node("/root/Console")
 	if _console == null:
