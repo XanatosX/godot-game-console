@@ -78,6 +78,8 @@ func _register_commands() -> void:
 									.with_argument(CommandArgument.create("text")
 												  				  .of_type(CommandArgument.Type.STRING)
 																  .with_description("echo a given text on the console")
+																  .with_predefined_value("Hello")
+																  .with_predefined_value("Bye")
 																  .finalize())
 									.documentation()
 									.with_description("Command to print text to the console")
