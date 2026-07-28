@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="FuzzyAutocompleteService" load_steps=2 format=3 uid="uid://s02yph7t2tbt"]
+
+[ext_resource type="Script" path="res://addons/gameconsole/console/autocompletion/autocomplete_fuzzy_service.gd" id="1_gc6x5"]
+
+[resource]
+script = ExtResource("1_gc6x5")
+max_allowed_distance = 10
