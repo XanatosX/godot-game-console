@@ -82,6 +82,25 @@ if Console.command_name_is_registered(my_custom_command.get_command_name()):
     print("command %s is registerd" % my_custom_command.get_command_name())
 ```
 
+### Fluent command builder
+
+Create a command with a fluent builder instead of the "classic" object creation, this is much more readable
+
+```gdscript
+	Console.register_command(Command.create("echo")
+									.calling_method(_echo_text)
+									.with_argument(CommandArgument.create("text")
+												  				  .of_type(CommandArgument.Type.STRING)
+																  .with_description("echo a given text on the console")
+																  .finalize())
+									.documentation()
+									.with_description("Command to print text to the console")
+									.with_long_description("This command does allow you to echo some text provided back to the console")
+									.add_example("echo test")
+									.finish()
+							)
+```
+
 ### Other important Options
 
 ```gdscript

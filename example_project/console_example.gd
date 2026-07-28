@@ -21,8 +21,8 @@ var counter: int = 0
 func _ready() -> void:
 	_register_commands()
 	Console.unknown_interaction_request.connect(_handle_unknown_interaction)
-	Console.update_console_settings(func(settings: ConsoleSettings): 
-		var service_to_use = ConsoleSettings.AutocompleteServiceProvider.CONTAINS
+	Console.update_console_settings(func(settings: ConsoleSettings) -> void: 
+		var service_to_use: ConsoleSettings.AutocompleteServiceProvider = ConsoleSettings.AutocompleteServiceProvider.CONTAINS
 		if autocomplete_service == 1:
 			service_to_use = ConsoleSettings.AutocompleteServiceProvider.FUZZY
 		settings.set_autocomplete_service(service_to_use)
@@ -73,13 +73,29 @@ func _register_commands() -> void:
 									["spawn_entity 200 300 4"]
 								   )
 
+	Console.register_command(Command.create("echo")
+									.calling_method(_echo_text)
+									.with_argument(CommandArgument.create("text")
+												  				  .of_type(CommandArgument.Type.STRING)
+																  .with_description("echo a given text on the console")
+																  .finalize())
+									.documentation()
+									.with_description("Command to print text to the console")
+									.with_long_description("This command does allow you to echo some text provided back to the console")
+									.add_example("echo test")
+									.finish()
+							)
+
 	if overwrite_console_toggle_key_with_f12:
 		Console.update_console_settings(func(settings: ConsoleSettings) -> void: settings.open_console_key = KEY_F12)
 
 	if !always_use_custom_console:
 		Console.register_custom_command("custom_console", _open_custom_console, [], "Open your custom console", "", [])
 		Console.register_custom_command("default_console", _open_default_console, [], "Open the default console")
-	
+
+func _echo_text(text: String) -> String:
+	return "echo: %s" % text
+
 func _spawn_entity(pos_x: int, pos_y: int, ttl: float) -> String:
 	_trigger_spawn_entity(pos_x, pos_y, ttl)
 

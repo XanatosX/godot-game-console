@@ -33,7 +33,6 @@ func search_autocomplete(typed: String) -> Array[StrippedCommand]:
 	result_set.sort_custom(_distance_sort)
 	var return_data: Array[StrippedCommand]
 	for data in result_set:
-		print(data.result.command)
 		return_data.append(data.result)
 
 	return return_data

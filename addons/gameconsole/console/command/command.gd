@@ -16,6 +16,10 @@ var self_example_links: Dictionary = {}
 
 var _is_valid: bool = true
 
+## Start fluent creation process for a Command instance
+static func create(name: String) -> CommandBuilderStart:
+	return CommandBuilderStart.new(name)
+
 var _console: GameConsole = null
 
 func _init(command_name: String,
@@ -98,8 +102,6 @@ func _get_data_at_position(in_arguments: Array, current_argument: CommandArgumen
 		value = in_arguments[data_index]
 	return value
 
-		
-
 func _validate_arguments(in_arguments: Array) -> bool:
 	var is_valid: bool = true
 	for i: int in arguments.size():
@@ -120,7 +122,6 @@ func _validate_arguments(in_arguments: Array) -> bool:
 
 	return is_valid
 		
-
 func get_interactive_command() -> String:
 	var url_part = "[url=%s]" % self_man_link.get_as_string()
 	return "%s%s %s[/url]" % [url_part, get_command_name(), get_arguments()]

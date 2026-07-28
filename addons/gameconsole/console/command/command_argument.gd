@@ -17,6 +17,10 @@ var _is_optional: bool = false
 var _default_value: String = ""
 var _predefined_values: Array
 
+## Start fluent creation process of a CommandArgument object
+static func create(name: String) -> ArgumentBuilderStart:
+	return ArgumentBuilderStart.new(name)
+
 ## Create a new command argument, if you provide a default value this command will be optional
 func _init(type: Type, name: String, description: String = "", default_value: String = "", predefined_values: Array = []) -> void:
 	_argument_type = type
