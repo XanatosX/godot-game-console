@@ -5,6 +5,7 @@ var name: String
 var type: CommandArgument.Type
 var description: String
 var default_value: String
+var predefined_values: Array[Variant] = []
 
 func _init(argument_name: String) -> void:
 	name = argument_name
@@ -14,4 +15,4 @@ func get_command_argument() -> CommandArgument:
 	if name == "":
 		push_error("get_command_argument: No name was provided for the command argument")
 		return
-	return CommandArgument.new(type, name, description, default_value)
+	return CommandArgument.new(type, name, description, default_value, predefined_values)
