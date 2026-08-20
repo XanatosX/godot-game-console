@@ -235,6 +235,12 @@ func _register_commands_in_directory(directory: String) -> void:
 		if loaded_command != null:
 			loaded_command.setup(self)
 			var real_command: Command = loaded_command.create_command() as Command
+			# CommandTemplate extends Node, so it is not reference counted, and without an
+			# owner it stays in ObjectDB for the life of the process. It cannot simply be
+			# freed either, the Command it builds binds a Callable to one of its methods
+			# and a Callable does not keep a Node alive. Parenting it to the console gives
+			# it an owner, keeps those Callables valid, and frees it with the console
+			add_child(loaded_command)
 			if real_command == null:
 				continue
 			_add_command(real_command, true)
