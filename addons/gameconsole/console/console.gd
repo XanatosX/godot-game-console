@@ -1,3 +1,5 @@
+## The main interaction class for the console plugin, this will allow you to manage all the command,
+## available right now, add new ones or remove commands if not required anymore.
 class_name GameConsole extends Node
 
 signal console_closed()
@@ -33,22 +35,23 @@ func _ready() -> void:
 	add_child(_overlay_node)
 	process_mode = PROCESS_MODE_ALWAYS
 
+## Ret
 func get_console_information() -> Dictionary:
 	return _console_information
 
 ## This method will allow you to define if the game should pause if the console opens up, since this will be removed in the future
-## Please use the `set_console_settings` or `update_console_settings` method instead
+## Please use the  [member GameConsole.set_console_settings] or [member GameConsole.update_console_settings] method instead
 ## @deprecated
 func should_pause_on_open(pause: bool) -> void:
 	console_settings.pause_game_if_console_opened = pause
 
 ## This method will allow you to set the custom console template, since this will be removed in the future
-## Please use the `set_console_settings` or `update_console_settings` method instead
+## Please use the [member GameConsole.set_console_settings] or [member GameConsole.update_console_settings] method instead
 ## @deprecated
 func set_custom_command_template(scene: PackedScene) -> void:
 	console_settings.custom_template = scene
 
-## This method will properly be removed in the future, please use the `set_console_settings` or `update_console_settings` method instead
+## This method will properly be removed in the future, please use the [member GameConsole.set_console_settings] or [member GameConsole.update_console_settings] method instead
 ## @deprecated
 func set_console_key(key: int) -> void:
 	console_settings.open_console_key = key
@@ -78,6 +81,8 @@ func _input(event: InputEvent) -> void:
 			get_tree().get_root().set_input_as_handled()
 		_last_state = event.is_pressed()
 
+## Toggle the visibility of the console, if you can see it right now
+## it will hide itself, if it is hidden already, it will be shown instead.
 func toggle_console() -> void:
 	if _is_disabled:
 		return
@@ -86,6 +91,7 @@ func toggle_console() -> void:
 	else:
 		hide_console()
 
+## Show the console
 func show_console() -> void:
 	var template: ConsoleTemplate = null
 	if console_settings.custom_template == null:
@@ -112,6 +118,7 @@ func show_console() -> void:
 		_first_time_open = false
 	console_open.emit()
 
+## Hide the console
 func hide_console() -> void:
 	for child: Node in _overlay_node.get_children():
 		if child is ConsoleTemplate:
@@ -148,7 +155,9 @@ func _register_custom_builtin_command(command: String,
 func _register_builtin_command(command: Command) -> void:
 	_add_command(command, true)
 
-## Register a custom command with strong typed parameters
+## Register a custom command with strong typed parameters, strong does mean that the console will
+## validate the data type of the arguments and only allow arguments which can be parsed in the
+## type set to be executed.
 func register_custom_strong_command(command: String,
 							 function: Callable,
 							 in_arguments: Array[CommandArgument],
@@ -159,7 +168,10 @@ func register_custom_strong_command(command: String,
 
 	return register_command(real_command)
 
-## Register a custom command without using the new parameter types
+## Register a custom command without using the new parameter types,
+## commands registered like that will use a simple argument array, no strong validation is
+## enabled. Use [method GameCOnsole.register_custom_strong_command] or [method GameCOnsole.register_command] 
+## if you want to register a strongly typed command
 func register_custom_command(command: String,
 							 function: Callable,
 							 in_arguments : PackedStringArray = [],
@@ -171,7 +183,23 @@ func register_custom_command(command: String,
 		converted_arguments.append(CommandArgument.new(CommandArgument.Type.UNKNOWN, argument, ""))
 	return register_custom_strong_command(command, function, converted_arguments, short_description, description, example)
 
-## Register a new command you already created the object instance for
+## Register a new command you already created the object instance for, this can be used with the fluent builder like so:
+## [codeblock]
+##register_command(Command.create("echo")
+##                        .calling_method(_echo_text)
+##                        .with_argument(CommandArgument.create("text")
+##                                                      .of_type(CommandArgument.Type.STRING)
+##                                                      .with_description("echo a given text on the console")
+##                                                      .with_predefined_value("Hello")
+##                                                      .with_predefined_value("Bye")
+##                                                      .finalize())
+##                        .documentation()
+##                        .with_description("Command to print text to the console")
+##                        .with_long_description("This command does allow you to echo some text provided back to the console")
+##                        .add_example("echo test")
+##                        .finish()
+##                 )
+## [/codeblock]
 func register_command(command: Command) -> bool:
 	if not command.is_valid_command():
 		var message: String = "Tried to register command %s which does use an invalid configuration!" % command.get_command_name()
@@ -188,7 +216,8 @@ func _add_command(command: Command, built_in: bool) -> void:
 	command.built_in = built_in
 	_console_commands[command.get_command_name()] = command
 
-
+## Remove a already registered command by its name, if the command was found or 
+## does not exist the method will return true
 func remove_command(name: String) -> bool:
 	name = name.to_snake_case()
 	if not command_name_is_registered(name):
@@ -199,12 +228,15 @@ func remove_command(name: String) -> bool:
 
 	return _console_commands.erase(name)
 
+## Check if a command is registered right now
 func command_is_registered(command: Command) -> bool:
 	return _console_commands.has(command.get_command_name())
 
+## Check if a command name is already registered, will return true if found
 func command_name_is_registered(name: String) -> bool:
 	return _console_commands.has(name)
 
+## Search an command by it's name and run it if found
 func search_and_execute_command(command_text: String) -> void:
 	command_text = command_text.strip_edges()
 	var executer: CommandDefinition = CommandDefinition.new(command_text)
@@ -245,15 +277,20 @@ func _get_autocomplete_commands() -> Array[StrippedCommand]:
 		if data is StrippedCommand:
 			return_data.append(data)
 	return return_data
-	
+
+## Disable the console this will prevent it from being shown.
+## you should call this is you do not run a debug build to ensure the console to be
+## inaccessible
 func disable() -> void:
 	_is_disabled = true
 	if _console_shown:
 		hide_console()
 
+## Enable the console, so it can be shown once again
 func enable() -> void:
 	_is_disabled = false
 
+## Print a text to the console
 func print(text: String) -> void:
 	text = text + "\n"
 	if !_console_shown:
@@ -285,6 +322,7 @@ func get_specific_command(command_name: String) -> Command:
 		return null	
 	return _console_commands[command_name]
 
+## A url interaction was requested, this will be handled by this method.
 func url_requested(interaction: Interaction) -> void:
 	match  interaction.get_type():
 		"man":

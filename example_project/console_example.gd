@@ -29,12 +29,9 @@ func _ready() -> void:
 		if always_use_custom_console:
 			settings.custom_template = custom_console_template
 	)
-	
-
 
 func _exit_tree() -> void:
 	_unregister_commands()
-
 
 func _register_commands() -> void:
 	Console.print("Example console print")
