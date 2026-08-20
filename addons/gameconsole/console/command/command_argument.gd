@@ -1,6 +1,6 @@
 ## A object representing a argument used by a command, each argument does have
 ## a type used to validate if the data provided to the command is valid.
-class_name CommandArgument extends Resource
+class_name CommandArgument extends RefCounted
 
 enum Type
 {
