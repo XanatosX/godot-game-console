@@ -94,7 +94,8 @@ func _display_autocomplete(data: StrippedCommand) -> void:
 	interaction.from_raw("enter", completion)
 	text = "[color=%s][url=%s]%s[/url][/color] %s" % [_console.console_settings.autocomplete_command_color, interaction.get_as_string(), completion, arguments]
 	_found_complete = true
-	await get_tree().physics_frame
+	if is_inside_tree():
+		await get_tree().physics_frame
 	_found_complete = false
 
 func _input(event: InputEvent) -> void:
