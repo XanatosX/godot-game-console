@@ -15,6 +15,7 @@ signal unknown_interaction_request(interaction: Interaction)
 @onready var console_settings: ConsoleSettings = preload("res://addons/gameconsole/resources/default_console_settings.tres")
 
 var _console_commands: Dictionary = {}
+var _command_templates: Array[CommandTemplate]
 
 var _overlay_node: CanvasLayer = CanvasLayer.new()
 
@@ -33,6 +34,8 @@ var _console_information: Dictionary = {
 func _ready() -> void:
 	_preregister_commands()
 	add_child(_overlay_node)
+	tree_entered.connect(_reregister_commands)
+	tree_exiting.connect(cleanup)
 	process_mode = PROCESS_MODE_ALWAYS
 
 ## Return the information related to this console plugin instance
@@ -254,6 +257,12 @@ func search_and_execute_command(command_text: String) -> void:
 	if result != "":
 		console_output.emit(result + "\n")
 
+## Method will call the preregister command function if there are no command templates in the array.
+## This will ensure that even after removing the console from the tree the commands will still be there.
+func _reregister_commands() -> void:
+	if _command_templates.is_empty():
+		_preregister_commands()
+
 func _preregister_commands() -> void:
 	_register_commands_in_directory("res://addons/gameconsole/builtin_commands/")
 
@@ -275,6 +284,7 @@ func _register_commands_in_directory(directory: String) -> void:
 			var real_command: Command = loaded_command.create_command() as Command
 			if real_command == null:
 				continue
+			_command_templates.append(loaded_command)
 			_add_command(real_command, true)
 
 func _get_autocomplete_commands() -> Array[StrippedCommand]:
@@ -339,3 +349,6 @@ func url_requested(interaction: Interaction) -> void:
 			search_and_execute_command(interaction.get_data())
 		_:
 			unknown_interaction_request.emit(interaction)
+
+func cleanup() -> void:
+	_command_templates.clear()
