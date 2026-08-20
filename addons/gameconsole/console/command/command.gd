@@ -157,10 +157,7 @@ func get_arguments() -> String:
 ## Get the command as a stripped command, stripped commands do not contain
 ## any links to the callable, no description, just the command name and the argument list
 func as_stripped() -> StrippedCommand:
-	var return_data: StrippedCommand = StrippedCommand.new()
-	return_data.command = command
-	return_data.arguments = arguments
-	return return_data
+	return StrippedCommand.new(command, arguments)
 
 
 ## Get the man page for this specific argument the man page will have different intractable
