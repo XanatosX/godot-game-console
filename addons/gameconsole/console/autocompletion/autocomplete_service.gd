@@ -1,6 +1,5 @@
 class_name AutocompleteService extends Resource
 
-
 var _console: GameConsole = null
 
 func setup(console: GameConsole) -> void:
