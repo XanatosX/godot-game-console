@@ -1,4 +1,4 @@
-class_name Interaction extends Resource
+class_name Interaction extends RefCounted
 
 var _type: String
 var _data: String

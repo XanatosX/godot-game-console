@@ -1,4 +1,4 @@
-class_name CommandDefinition extends Resource
+class_name CommandDefinition extends RefCounted
 
 var command: String
 var arguments: PackedStringArray = []
