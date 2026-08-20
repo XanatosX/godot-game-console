@@ -172,28 +172,44 @@ func get_man_page() -> String:
 	if description_to_show == "":
 		description_to_show = short_description
 	return_text += "%s\n" % description_to_show
-	if arguments.size() > 0:
-		return_text += "\n[i][b]Arguments[/b][/i]\n\n"
-		return_text += "[ul]"
-		for argument: CommandArgument in arguments:
-			if argument.is_optional():
-				return_text += "[Optional] "
-			return_text += "%s" % argument.get_display_name()
-			var argument_description: String = argument.get_description()
-			if not argument_description.is_empty():
-				return_text += " -> %s" % argument_description
-			
-			return_text += "\n"
 
-		return_text += "[/ul]"
-	if examples.size() > 0:
-		return_text += "\n\n[i][b]Examples[/b][/i]\n\n"
-		return_text += "[ul]"
-		for example in examples:
-			var link: Interaction = self_example_links[example] as Interaction
-			
-			var example_url: String = "[url=%s]" % link.get_as_string()
-			return_text += "%s%s[/url]\n" % [example_url, example]
-		return_text += "[/ul]"
+	return_text += _get_man_arguments()
+	return_text += _get_man_examples()
 
+	return return_text
+
+func _get_man_arguments() -> String:
+	var return_text: String = ""
+	if arguments.is_empty():
+		return return_text
+
+	return_text += "\n[i][b]Arguments[/b][/i]\n\n"
+	return_text += "[ul]"
+	for argument: CommandArgument in arguments:
+		if argument.is_optional():
+			return_text += "[Optional] "
+		return_text += "%s" % argument.get_display_name()
+		var argument_description: String = argument.get_description()
+		if not argument_description.is_empty():
+			return_text += " -> %s" % argument_description
+			
+		return_text += "\n"
+
+	return_text += "[/ul]"
+
+	return return_text 
+
+func _get_man_examples() -> String:
+	var return_text: String = ""
+	if examples.is_empty():
+		return return_text
+	
+	return_text += "\n\n[i][b]Examples[/b][/i]\n\n"
+	return_text += "[ul]"
+	for example in examples:
+		var link: Interaction = self_example_links[example] as Interaction
+		
+		var example_url: String = "[url=%s]" % link.get_as_string()
+		return_text += "%s%s[/url]\n" % [example_url, example]
+	return_text += "[/ul]"
 	return return_text

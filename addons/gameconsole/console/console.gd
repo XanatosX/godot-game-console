@@ -35,7 +35,7 @@ func _ready() -> void:
 	add_child(_overlay_node)
 	process_mode = PROCESS_MODE_ALWAYS
 
-## Ret
+## Return the information related to this console plugin instance
 func get_console_information() -> Dictionary:
 	return _console_information
 
@@ -93,6 +93,9 @@ func toggle_console() -> void:
 
 ## Show the console
 func show_console() -> void:
+	if _console_shown:
+		return
+
 	var template: ConsoleTemplate = null
 	if console_settings.custom_template == null:
 		console_settings.custom_template = console_template
@@ -120,6 +123,9 @@ func show_console() -> void:
 
 ## Hide the console
 func hide_console() -> void:
+	if not _console_shown:
+		return
+
 	for child: Node in _overlay_node.get_children():
 		if child is ConsoleTemplate:
 			child.close_requested()
@@ -129,7 +135,6 @@ func hide_console() -> void:
 			child.queue_free()
 			if console_settings.pause_game_if_console_opened:
 				search_and_execute_command("unpause")
-
 
 func _store_console_content(text: String) -> void:
 	_stored_console_content = text
@@ -233,6 +238,7 @@ func command_is_registered(command: Command) -> bool:
 	return _console_commands.has(command.get_command_name())
 
 ## Check if a command name is already registered, will return true if found
+## make sure to use the exact name as you registered the command
 func command_name_is_registered(name: String) -> bool:
 	return _console_commands.has(name)
 
@@ -319,7 +325,7 @@ func get_all_commands() -> Array:
 ## Get a specific command or null if nothing was found
 func get_specific_command(command_name: String) -> Command:
 	if not command_name_is_registered(command_name):
-		return null	
+		return null
 	return _console_commands[command_name]
 
 ## A url interaction was requested, this will be handled by this method.
