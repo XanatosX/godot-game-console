@@ -1,4 +1,4 @@
-class_name CommandTemplate extends Node
+@abstract class_name CommandTemplate extends RefCounted
 
 var _console: GameConsole = null
 

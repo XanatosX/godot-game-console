@@ -14,6 +14,11 @@ signal unknown_interaction_request(interaction: Interaction)
 
 var _console_commands: Dictionary = {}
 
+# the templates the built in commands were built from. A Command binds a Callable to a method on
+# its template, and a Callable holds an ObjectID rather than a strong reference, so something has
+# to keep the template alive or the command comes back dead. Held here, released with the console
+var _command_templates: Array[CommandTemplate] = []
+
 var _overlay_node: CanvasLayer = CanvasLayer.new()
 
 var _console_shown: bool = false
@@ -32,6 +37,16 @@ func _ready() -> void:
 	_preregister_commands()
 	add_child(_overlay_node)
 	process_mode = PROCESS_MODE_ALWAYS
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		_cleanup()
+
+# anything the console needs to release on its way out belongs in here. Tied to predelete rather
+# than to leaving the tree, because commands are registered in _ready, and _ready does not run
+# again if a console is removed from the tree and added back
+func _cleanup() -> void:
+	_command_templates.clear()
 
 func get_console_information() -> Dictionary:
 	return _console_information
@@ -235,14 +250,11 @@ func _register_commands_in_directory(directory: String) -> void:
 		if loaded_command != null:
 			loaded_command.setup(self)
 			var real_command: Command = loaded_command.create_command() as Command
-			# CommandTemplate extends Node, so it is not reference counted, and without an
-			# owner it stays in ObjectDB for the life of the process. It cannot simply be
-			# freed either, the Command it builds binds a Callable to one of its methods
-			# and a Callable does not keep a Node alive. Parenting it to the console gives
-			# it an owner, keeps those Callables valid, and frees it with the console
-			add_child(loaded_command)
 			if real_command == null:
 				continue
+			# the command we just built binds a Callable to a method on this template, so the
+			# template has to outlive this loop. A template that built nothing is not kept
+			_command_templates.append(loaded_command)
 			_add_command(real_command, true)
 
 func _get_autocomplete_commands() -> Array[StrippedCommand]:
