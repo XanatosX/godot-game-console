@@ -267,6 +267,7 @@ func _register_commands_in_directory(directory: String) -> void:
 		if loaded_command != null:
 			loaded_command.setup(self)
 			var real_command: Command = loaded_command.create_command() as Command
+			loaded_command.queue_free()
 			if real_command == null:
 				continue
 			_add_command(real_command, true)
