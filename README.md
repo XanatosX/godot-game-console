@@ -180,5 +180,9 @@ jitspoe because his add-on did influenced the creation for my interpretation of 
 
 - https://github.com/jitspoe/godot-console
 
+
+> ⚠️ **Note:** Before contributing, please review our [AI usage policy][ai-usage-policy].
+
 [example-gdscript]: ./example/console_example.gd
 [installing-and-enable-plugin]: https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html#enabling-a-plugin
+[ai-usage-policy]: CONTRIBUTING.md#ai-usage-policy

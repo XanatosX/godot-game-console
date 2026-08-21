@@ -26,6 +26,24 @@ Thank you for considering contributing to the **Godot Console Plugin**! Your con
 - Keep lines under **72 characters** for readability.
 - Use **descriptive variable and function names**.
 
+### AI Usage Policy
+This project is influenced by the same principles as the [Godot Engine][godot-engine-ai-usage] regarding AI usage.
+
+The use of AI to contribute to this project is **discouraged**, and contributions made **entirely by AI are prohibited**. Those contributions will be remove right away without warning if detected.
+
+> **Note**
+> "AI" in this context refers to any LLM/generative AI model (e.g., ChatGPT, Claude, Grok, etc.) or any other models that fulfill the same role.
+> Using translation software to communicate is **fine**, and **single-line code completion does not have to be disclosed**.
+
+We acknowledge that AI can be useful, but we are convinced that **human effort results in better and more relevant contributions**.
+
+If you do use AI, we expect that you:
+- Put in effort to **proofread and improve** anything it generates.
+- **Disclose what you used AI for**.
+- Ensure the code is **well-tested and functional**.
+  
+Please be respectful of maintainers' time and **only submit contributions you have put thought and effort into**
+
 ### Commit Messages
 
 This project uses [Conventional Commits][conventional-commits] to maintain a clear and structured commit history. Follow the format below:
@@ -137,3 +155,4 @@ Thank you for your contributions! 🎉
 [conventional-commits]: https://www.conventionalcommits.org/en/v1.0.0/
 [license]: LICENSE
 [issues]: https://github.com/XanatosX/godot-game-console/issues
+[godot-engine-ai-usage]: https://contributing.godotengine.org/en/latest/pull_requests/pull_request_guidelines.html#ai-assisted-contributions
