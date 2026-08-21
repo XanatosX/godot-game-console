@@ -19,11 +19,11 @@ func _init():
 func search_autocomplete(typed: String) -> Array[StrippedCommand]:
 	var result_set: Array[FuzzyResult] = []
 	for possible_command in Console._get_autocomplete_commands():
-		var distance: int = _calculate_distance(typed, possible_command.command)
-		if typed.length() >= 3 and possible_command.command.begins_with(typed):
+		var distance: int = _calculate_distance(typed, possible_command.get_name())
+		if typed.length() >= 3 and possible_command.get_name().begins_with(typed):
 			distance = 0
 
-		if typed.length() >= 3 and possible_command.command.contains(typed):
+		if typed.length() >= 3 and possible_command.get_name().contains(typed):
 			distance = min(distance, 3)
 		if distance >= _get_max_allowed_difference(typed.length()):
 			continue
@@ -85,5 +85,5 @@ func _calculate_distance(search: String, source: String) -> int:
 
 func _distance_sort(a: FuzzyResult, b: FuzzyResult) -> bool:
 	if a.distance == b.distance:
-		return a.result.command < b.result.command
+		return a.result.get_name() < b.result.get_name()
 	return a.distance < b.distance
