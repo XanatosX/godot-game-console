@@ -86,7 +86,8 @@ func autocomplete_accepted(autocomplete_text: String) -> void:
 	caret_column = text.length()
 	_autocomplete_color_active = false
 	text_changed.emit(text)
-	await get_tree().physics_frame
+	if is_inside_tree():
+		await get_tree().physics_frame
 	_autocomplete_color_active = true
 
 func is_command_valid(confirmed: bool) -> void:
