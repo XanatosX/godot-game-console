@@ -20,8 +20,14 @@ func add_example(example: String) -> CommandBuilderHelp:
 	_data.examples.append(example)
 	return self
 	
-## Create a valid command instance, useable by the Console
+## Create a valid command instance, useable by the Console,
+## this method is deprecated, please use [method CommandBuilderHelp.finalize] instead.
+## @deprecated
 func finish() -> Command:
+	return finalize()
+
+## Create a valid command instance, useable by the Console
+func finalize() -> Command:
 	var command: Command = _data.get_command()
 	_data = null
 	return command
