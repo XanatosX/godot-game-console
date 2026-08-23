@@ -14,7 +14,7 @@ signal unknown_interaction_request(interaction: Interaction)
 @onready var console_template: PackedScene = preload("res://addons/gameconsole/entites/default_console/scenes/default_console_template.tscn")
 @onready var console_settings: ConsoleSettings = preload("res://addons/gameconsole/resources/default_console_settings.tres")
 
-var _console_commands: Dictionary = {}
+var _console_commands: Dictionary[String, Command] = {}
 var _command_templates: Array[CommandTemplate]
 
 var _overlay_node: CanvasLayer = CanvasLayer.new()
@@ -25,7 +25,7 @@ var _last_state: bool = false
 
 var _stored_console_content: String = ""
 var _first_time_open: bool = true
-var _console_information: Dictionary = {
+var _console_information: Dictionary[String, String] = {
 	"name": "Game Console",
 	"authors": "Xanatos",
 	"version": "0.6.4"
@@ -39,7 +39,7 @@ func _ready() -> void:
 	process_mode = PROCESS_MODE_ALWAYS
 
 ## Return the information related to this console plugin instance
-func get_console_information() -> Dictionary:
+func get_console_information() -> Dictionary[String, String]:
 	return _console_information
 
 ## This method will allow you to define if the game should pause if the console opens up, since this will be removed in the future

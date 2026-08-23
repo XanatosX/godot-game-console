@@ -18,7 +18,7 @@ func _init():
 
 func search_autocomplete(typed: String) -> Array[StrippedCommand]:
 	var result_set: Array[FuzzyResult] = []
-	for possible_command in Console._get_autocomplete_commands():
+	for possible_command: StrippedCommand in Console._get_autocomplete_commands():
 		var distance: int = _calculate_distance(typed, possible_command.get_name())
 		if typed.length() >= 3 and possible_command.get_name().begins_with(typed):
 			distance = 0
@@ -32,7 +32,7 @@ func search_autocomplete(typed: String) -> Array[StrippedCommand]:
 
 	result_set.sort_custom(_distance_sort)
 	var return_data: Array[StrippedCommand]
-	for data in result_set:
+	for data: FuzzyResult in result_set:
 		return_data.append(data.result)
 
 	return return_data
@@ -56,25 +56,25 @@ func _calculate_distance(search: String, source: String) -> int:
 		return length_a
 
 	var matrix: Array[Array] = []		
-	for i in length_a + 1:
+	for i: int in length_a + 1:
 		matrix.append([])
-		for j in length_b + 1:
+		for j: int in length_b + 1:
 			matrix[i].append(0)
 
-	for i in length_a + 1:
+	for i: int in length_a + 1:
 		matrix[i][0] = i
-	for j in length_b + 1:
+	for j: int in length_b + 1:
 		matrix[0][j] = j
 
-	for i in range(1, length_a + 1):
-		for j in range(1, length_b + 1):
+	for i: int in range(1, length_a + 1):
+		for j: int in range(1, length_b + 1):
 			var cost: int = 1
 			if search[i - 1] == source[j - 1]:
 				cost = 0
 
-			var deletion = matrix[i - 1][j] + 1
-			var insertion = matrix[i][j - 1] + 1
-			var substitution = matrix[i - 1][j - 1] + cost
+			var deletion: int  = matrix[i - 1][j] + 1
+			var insertion: int = matrix[i][j - 1] + 1
+			var substitution: int = matrix[i - 1][j - 1] + cost
 			matrix[i][j] = min(deletion, insertion, substitution)
 
 			if i > 1 and j > 1:

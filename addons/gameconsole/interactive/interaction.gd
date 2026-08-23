@@ -2,6 +2,7 @@ class_name Interaction extends RefCounted
 
 var _type: String
 var _data: String
+## No specific type as additional data is a dictionary while other keys are strings
 var _additional_data: Dictionary
 
 var _json_data: String
@@ -32,7 +33,7 @@ func get_additional_data() -> Dictionary:
 func get_as_string() -> String:
     if _json_data:
         return _json_data
-    var result = {
+    var result: Dictionary = {
         "type": _type,
         "data": _data,
     }

@@ -76,7 +76,7 @@ func force_set_input(command: String) -> void:
 	set_input.emit(command)
 	
 func url_requested(data: String) -> void:
-	var parsed = JSON.parse_string(data) as Dictionary
+	var parsed: Dictionary = JSON.parse_string(data) as Dictionary
 	if parsed == null:
 		_console.print_as_error("url data was not correctly parsed")
 		return
