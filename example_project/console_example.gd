@@ -82,7 +82,7 @@ func _register_commands() -> void:
 									.with_description("Command to print text to the console")
 									.with_long_description("This command does allow you to echo some text provided back to the console")
 									.add_example("echo test")
-									.finish()
+									.finalize()
 							)
 
 	if overwrite_console_toggle_key_with_f12:
