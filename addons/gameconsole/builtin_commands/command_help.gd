@@ -15,7 +15,7 @@ func create_command() -> Command:
 	return command
 
 func _get_help() -> String:
-	var information: Dictionary = _console.get_console_information()
+	var information: Dictionary[String, String] = _console.get_console_information()
 
 	var addon_name: String = information.get_or_add("name", "UNKNOWN KEY: name")
 	var author_list: String = information.get_or_add("authors", "UNKNOWN KEY: author")

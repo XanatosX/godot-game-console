@@ -78,7 +78,7 @@ func _display_autocomplete(data: StrippedCommand) -> void:
 			color = _console.console_settings.autocomplete_argument_color_even
 		if _selected_predefined_value >= 0 and argument_counter == _selected_predefined_value:
 			color = _console.console_settings.autocomplete_argument_selected_predefined
-			var values: Array = argument.get_predefined_arguments()
+			var values: Array[Variant] = argument.get_predefined_arguments()
 			_current_autocomplete_value = ""
 			if values.size() > 0:
 				display_name = "%s {%s}" % [display_name, str(values[_current_selected_predefined_option])]

@@ -118,7 +118,7 @@ func _spawn_entity(pos_x: int, pos_y: int, ttl: float) -> String:
 																									  ]
 
 func _trigger_spawn_entity(x: int, y: int, ttl: float) -> void:
-	var target_position:Vector2 = Vector2(x, y)
+	var target_position: Vector2 = Vector2(x, y)
 	var new_node: EntityExample = EntityExample.new(target_position, ttl)
 	add_child(new_node)
 

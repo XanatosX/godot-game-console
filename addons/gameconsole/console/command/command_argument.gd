@@ -17,7 +17,7 @@ var _argument_description: String = ""
 
 var _is_optional: bool = false
 var _default_value: String = ""
-var _predefined_values: Array
+var _predefined_values: Array[Variant]
 
 ## Start fluent creation process of a CommandArgument object
 static func create(name: String) -> ArgumentBuilderStart:
@@ -35,10 +35,10 @@ func _init(type: Type, name: String, description: String = "", default_value: St
 	_add_predefined_values(predefined_values)
 	make_optional(default_value)
 
-func _add_predefined_values(predefined_values: Array) -> void:
+func _add_predefined_values(predefined_values: Array[Variant]) -> void:
 	if predefined_values.size() == 0:
 		return
-	for value in predefined_values:
+	for value: Variant in predefined_values:
 		if value is String and get_type() == Type.STRING:
 			_predefined_values.append(value)
 		if value is int and get_type() == Type.INT:
@@ -97,7 +97,7 @@ func is_valid_for(data: String) -> bool:
 		Type.BOOL:
 			if not data.is_valid_int():
 				return false
-			var converted_data = int(data)
+			var converted_data: int = int(data)
 			return converted_data == 0 or converted_data == 1
 		_:
 			return false
@@ -129,5 +129,5 @@ func get_default_value() -> String:
 	return _default_value
 
 ## Get all the predefined argument values this argument can take
-func get_predefined_arguments() -> Array:
+func get_predefined_arguments() -> Array[Variant]:
 	return _predefined_values

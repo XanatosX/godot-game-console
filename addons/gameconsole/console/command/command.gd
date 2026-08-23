@@ -14,7 +14,7 @@ var built_in: bool = false
 
 var self_man_link: Interaction
 var self_enter_link: Interaction
-var self_example_links: Dictionary = {}
+var self_example_links: Dictionary[String, Interaction] = {}
 
 var _is_valid: bool = true
 
@@ -49,7 +49,7 @@ func _init(command_name: String,
 
 	_validate_self()
 
-	for example in examples:
+	for example: String in examples:
 		var example_link: Interaction = Interaction.new()
 		example_link.from_raw("enter", example)
 		self_example_links[example] = example_link
@@ -79,7 +79,7 @@ func get_command_name() -> String:
 
 ## Execute this command with the arguments provided, this should not be called from
 ## any other object beside the [GameConsole] plugin class
-func execute(in_arguments: Array) -> String:
+func execute(in_arguments: Array[String]) -> String:
 	if _console == null:
 		push_error("Missing console addon singleton, please check if plugin is active")
 	if arguments.size() > 0 and in_arguments.size() < arguments.filter(func(argument): return not argument.is_optional()).size():
@@ -107,7 +107,7 @@ func execute(in_arguments: Array) -> String:
 		return_value = command_result
 	return return_value
 
-func _get_data_at_position(in_arguments: Array, current_argument: CommandArgument, data_index: int) -> String:
+func _get_data_at_position(in_arguments: Array[String], current_argument: CommandArgument, data_index: int) -> String:
 	var value: String = ""
 	if current_argument.is_optional():
 		value = current_argument.get_default_value()
@@ -115,16 +115,16 @@ func _get_data_at_position(in_arguments: Array, current_argument: CommandArgumen
 		value = in_arguments[data_index]
 	return value
 
-func _validate_arguments(in_arguments: Array) -> bool:
+func _validate_arguments(in_arguments: Array[String]) -> bool:
 	var is_valid: bool = true
 	for i: int in arguments.size():
-		var current_argument_type = arguments[i]
+		var current_argument_type: CommandArgument = arguments[i]
 
 		var value: String = _get_data_at_position(in_arguments, current_argument_type, i)
 
 		if not current_argument_type.is_valid_for(value):
 			is_valid = false
-			var data = "%s %s %s %s %s" % ["argument_not_valid",
+			var data: String = "%s %s %s %s %s" % ["argument_not_valid",
 										   command,
 										   current_argument_type.get_display_name().to_snake_case(),
 										   current_argument_type.Type.keys()[current_argument_type.get_type()],
@@ -139,7 +139,7 @@ func _validate_arguments(in_arguments: Array) -> bool:
 ## a link calling the "manual" of that specific command. It will add the name and all the arguments
 ## available for that specific command.
 func get_interactive_command() -> String:
-	var url_part = "[url=%s]" % self_man_link.get_as_string()
+	var url_part: String = "[url=%s]" % self_man_link.get_as_string()
 	return "%s%s %s[/url]" % [url_part, get_command_name(), get_arguments()]
 
 ## Get the short description of the command if any available.
@@ -149,8 +149,8 @@ func get_command_short_description() -> String:
 ## Get all arguments as a string, each argument will be in square brackets
 ## there is no space between the arguments
 func get_arguments() -> String:
-	var return_arguments = ""
-	for argument in arguments:
+	var return_arguments: String = ""
+	for argument: CommandArgument in arguments:
 		return_arguments += "[%s]" % argument.get_display_name()
 	return return_arguments
 
@@ -203,7 +203,7 @@ func _get_man_examples() -> String:
 	
 	return_text += "\n\n[i][b]Examples[/b][/i]\n\n"
 	return_text += "[ul]"
-	for example in examples:
+	for example: String in examples:
 		var link: Interaction = self_example_links[example] as Interaction
 		
 		var example_url: String = "[url=%s]" % link.get_as_string()
